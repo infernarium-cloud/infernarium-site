@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFERNARIUM | Samhain 2026</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Container da Logo */
+        .logo-container {
+            min-height: 250px; 
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Logo */
+        .logo-container img {
+            max-width: 250px; 
+            width: 100%;
+            height: auto;
+            display: block;
+            animation: slow-breath 8s infinite ease-in-out;
+        }
+
+        .content {
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 20px;
+            width: 250px; 
+        }
+
+        h1 {
+            font-weight: 300;
+            /* Reduzido para 2px para caber na linha sem quebrar */
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+            /* AUMENTADO: Definido em px para precisão (+1px visualmente em relação ao anterior) */
+            font-size: 12px; 
+            color: #444;
+            margin-bottom: 20px;
+            /* FORÇA LINHA ÚNICA */
+            white-space: nowrap; 
+        }
+
+        /* Contador */
+        #countdown {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            font-size: 1.2rem; 
+            color: #700;
+            font-weight: bold;
+        }
+
+        .time-block { display: flex; flex-direction: column; align-items: center; }
+        .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+
+        /* Ponto Vermelho */
+        .pulse-dot {
+            width: 3px;
+            height: 3px;
+            background-color: #900;
+            border-radius: 50%;
+            margin: 30px auto 0 auto;
+            animation: slow-breath 8s infinite ease-in-out;
+        }
+
+        /* Rodapé de Créditos */
+        .footer-credits {
+            position: absolute;
+            bottom: 25px;
+            font-size: 0.7rem;
+            color: #2a2a2a;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            cursor: default;
+        }
+
+        .footer-credits span {
+            font-weight: bold;
+        }
+
+        /* --- CLASSES DE EFEITO --- */
+
+        .glitch {
+            position: relative;
+            display: inline-block;
+            color: #800;
+            animation: glitch-flash 2.5s infinite steps(1); 
+        }
+
+        .glitch-move {
+            position: relative;
+            display: inline-block;
+            color: #800;
+            animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out;
+        }
+
+        .glitch::before, .glitch::after,
+        .glitch-move::before, .glitch-move::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+            overflow: hidden;
+        }
+
+        .glitch::before, .glitch-move::before {
+            left: 2px;
+            text-shadow: -1px 0 #fff; 
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after, .glitch-move::after {
+            left: -2px;
+            text-shadow: -1px 0 #fff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        /* --- KEYFRAMES --- */
+
+        @keyframes depth-move {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 10px rgba(136, 0, 0, 0.5); }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        @keyframes slow-breath {
+            0% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.4)); opacity: 1; }
+            100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
+        }
+
+        @keyframes glitch-flash {
+            0% { color: #800; text-shadow: none; }
+            92% { color: #800; text-shadow: none; }
+            93% { color: #fff; text-shadow: 0 0 5px #fff, 0 0 10px #f00; }
+            94% { color: #800; text-shadow: none; }
+            96% { color: #fff; text-shadow: 0 0 5px #fff; }
+            97% { color: #800; text-shadow: none; }
+            100% { color: #800; text-shadow: none; }
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(20px, 9999px, 15px, 0); transform: skew(0.5deg); }
+            10% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+            20% { clip: rect(80px, 9999px, 95px, 0); transform: skew(5deg); }
+            50% { clip: rect(40px, 9999px, 60px, 0); transform: skew(-5deg); }
+            80% { clip: rect(10px, 9999px, 20px, 0); transform: skew(10deg); }
+            100% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+            15% { clip: rect(60px, 9999px, 70px, 0); transform: skew(-10deg); }
+            45% { clip: rect(10px, 9999px, 50px, 0); transform: skew(5deg); }
+            75% { clip: rect(85px, 9999px, 100px, 0); transform: skew(-5deg); }
+            100% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <img src="logo.png" alt="[ INFERNARIUM ]">
+    </div>
+
+    <div class="content">
+        <h1>Opening on Halloween 2026</h1>
+        
+        <div id="countdown">
+            <div class="time-block"><span id="days">--</span><span class="label">Days</span></div>
+            <div class="time-block"><span id="hours">--</span><span class="label">Hrs</span></div>
+            <div class="time-block"><span id="minutes">--</span><span class="label">Min</span></div>
+            
+            <div class="time-block">
+                <span id="seconds" class="glitch" data-text="--">--</span>
+                <span class="label">Sec</span>
+            </div>
+        </div>
+
+        <div class="pulse-dot"></div>
+    </div>
+
+    <div class="footer-credits">
+        Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
+    </div>
+
+    <script>
+        const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "ESTABLISHED";
+                return;
+            }
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const sFormatted = s.toString().padStart(2, '0');
+
+            document.getElementById("days").innerText = d.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = h.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
+            
+            const secondsEl = document.getElementById("seconds");
+            secondsEl.innerText = sFormatted;
+            secondsEl.setAttribute('data-text', sFormatted);
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
