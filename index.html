@@ -46,14 +46,11 @@
 
         h1 {
             font-weight: 300;
-            /* Reduzido para 2px para caber na linha sem quebrar */
             letter-spacing: 2px; 
             text-transform: uppercase;
-            /* AUMENTADO: Definido em px para precisão (+1px visualmente em relação ao anterior) */
             font-size: 12px; 
             color: #444;
             margin-bottom: 20px;
-            /* FORÇA LINHA ÚNICA */
             white-space: nowrap; 
         }
 
@@ -80,24 +77,46 @@
             animation: slow-breath 8s infinite ease-in-out;
         }
 
-        /* Rodapé de Créditos */
-        .footer-credits {
+        /* --- NOVO RODAPÉ COM EFEITO TÚNEL --- */
+        .footer-wrapper {
             position: absolute;
             bottom: 25px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .wormhole-container {
+            width: 600px; /* Janela de visualização do túnel */
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: wormhole-scroll 18s linear infinite;
             font-size: 0.7rem;
             color: #2a2a2a;
             letter-spacing: 3px;
             text-transform: uppercase;
-            opacity: 0.9;
-            cursor: default;
         }
 
-        .footer-credits span {
-            font-weight: bold;
+        .scrolling-text span {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* Espaçamento de 5cm (aprox 190px) */
+        .spacer {
+            display: inline-block;
+            width: 190px;
         }
 
         /* --- CLASSES DE EFEITO --- */
-
         .glitch {
             position: relative;
             display: inline-block;
@@ -139,6 +158,10 @@
         }
 
         /* --- KEYFRAMES --- */
+        @keyframes wormhole-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
         @keyframes depth-move {
             0% { transform: scale(0.9); opacity: 0.8; }
@@ -203,8 +226,15 @@
         <div class="pulse-dot"></div>
     </div>
 
-    <div class="footer-credits">
-        Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
+    <div class="footer-wrapper">
+        <div class="wormhole-container">
+            <div class="scrolling-text">
+                <span>商売繁盛</span><div class="spacer"></div>
+                <span>Design by <b style="color: #444;">KOOPER</b> 2026 &reg;</span><div class="spacer"></div>
+                <span>商売繁盛</span><div class="spacer"></div>
+                <span>Design by <b style="color: #444;">KOOPER</b> 2026 &reg;</span><div class="spacer"></div>
+            </div>
+        </div>
     </div>
 
     <script>
