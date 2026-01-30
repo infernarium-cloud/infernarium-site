@@ -11,7 +11,6 @@
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Padrão */
             -webkit-touch-callout: none; /* Impede menu de contexto no mobile */
-            box-sizing: border-box;
         }
 
         body {
@@ -26,7 +25,20 @@
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             position: relative;
-            cursor: default;
+        }
+
+        /* --- SELO INFERIOR ESQUERDO --- */
+        .seal-corner {
+            position: absolute;
+            bottom: 25px;
+            left: 5%;
+            width: 60px; /* Tamanho pequeno */
+            height: auto;
+            opacity: 0.4;
+            filter: grayscale(100%);
+            animation: slow-breath 8s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 10;
         }
 
         /* --- LETREIRO TOPO --- */
@@ -58,7 +70,10 @@
             letter-spacing: 3px;
         }
 
-        .spacer-jp { display: inline-block; width: 115px; }
+        .spacer-jp {
+            display: inline-block;
+            width: 115px;
+        }
 
         .red-pulse {
             color: #400;
@@ -73,17 +88,14 @@
             align-items: flex-end;
             justify-content: center;
             margin-bottom: 20px;
-            z-index: 20; /* Logo acima do selo */
-            position: relative;
         }
 
-        /* Ajustei para logo_inf.png baseado no nosso histórico, confira o nome na pasta */
         .logo-container img {
             max-width: 220px; 
             width: 80%; 
             height: auto;
             animation: slow-breath 8s infinite ease-in-out;
-            pointer-events: none;
+            pointer-events: none; 
         }
 
         .content {
@@ -91,8 +103,6 @@
             border-top: 1px solid #1a1a1a;
             padding-top: 20px;
             width: 280px; 
-            z-index: 20;
-            position: relative;
         }
 
         h1 {
@@ -136,55 +146,80 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             white-space: nowrap;
-            z-index: 20;
-        }
-
-        /* --- ESTILO DO SELO MISTERIOSO --- */
-        #seal {
-            position: absolute;
-            width: 60px; /* Pequeno conforme pedido */
-            opacity: 0; /* Começa invisível */
-            transition: opacity 2s ease-in-out; /* Fade lento */
-            filter: grayscale(100%) brightness(40%) contrast(120%); /* Visual dark */
-            pointer-events: none; /* Não bloqueia cliques */
-            z-index: 5; /* Atrás do texto principal, mas visível */
-        }
-
-        .seal-visible {
-            opacity: 0.5 !important; /* Aparece como "fantasma" */
         }
 
         /* --- EFEITOS GLITCH --- */
-        .glitch { position: relative; display: inline-block; color: #800; animation: glitch-flash 2.5s infinite steps(1); }
+        .glitch {
+            position: relative;
+            display: inline-block;
+            color: #800;
+            animation: glitch-flash 2.5s infinite steps(1); 
+        }
 
         .glitch-move {
-            position: relative; display: inline-block; color: #800;
+            position: relative;
+            display: inline-block;
+            color: #800;
             animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out;
         }
 
         .glitch-move::before, .glitch-move::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #050505; overflow: hidden;
         }
-        .glitch-move::before { left: 2px; text-shadow: -1px 0 #fff; clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-1 1.5s infinite linear alternate-reverse; }
-        .glitch-move::after { left: -2px; text-shadow: -1px 0 #fff; clip: rect(85px, 550px, 140px, 0); animation: glitch-anim-2 2s infinite linear alternate-reverse; }
+
+        .glitch-move::before {
+            left: 2px; text-shadow: -1px 0 #fff; 
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
+        }
+
+        .glitch-move::after {
+            left: -2px; text-shadow: -1px 0 #fff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
 
         /* --- KEYFRAMES --- */
-        @keyframes pulse-red-text { 0%, 100% { color: #400; text-shadow: 0 0 0px transparent; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
-        @keyframes wormhole-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes slow-breath { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; } 50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 1; } }
-        @keyframes depth-move { 0%, 100% { transform: scale(0.9); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
-        @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; text-shadow: none; } 93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; } }
+        @keyframes pulse-red-text {
+            0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
+            50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+        }
+
+        @keyframes wormhole-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes slow-breath {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 0.8; }
+        }
+
+        @keyframes depth-move {
+            0%, 100% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes glitch-flash {
+            0%, 92%, 94%, 97%, 100% { color: #800; text-shadow: none; }
+            93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
+        }
 
         @media (max-width: 400px) {
             .wormhole-container { width: 95vw; }
             .content { width: 240px; }
             #countdown { font-size: 0.9rem; gap: 8px; }
             .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
+            .seal-corner { left: 50%; bottom: 60px; transform: translateX(-50%); }
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
+
+    <img src="seal_01.png" class="seal-corner" alt="Seal" ondragstart="return false">
 
     <div class="header-wormhole">
         <div class="wormhole-container">
@@ -204,7 +239,7 @@
     </div>
 
     <div class="logo-container">
-        <img src="logo_inf.png" alt="[ INFERNARIUM ]" ondragstart="return false">
+        <img src="logo.png" alt="[ INFERNARIUM ]" ondragstart="return false">
     </div>
 
     <div class="content">
@@ -225,40 +260,7 @@
         Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
     </div>
 
-    <img id="seal" src="seal_01.png" alt="" ondragstart="return false">
-
     <script>
-        // --- LÓGICA DO SELO PISCANTE E ALEATÓRIO ---
-        const seal = document.getElementById('seal');
-        
-        function moveSeal() {
-            // Define limites seguros (janela menos tamanho do selo)
-            const maxWidth = window.innerWidth - 80;
-            const maxHeight = window.innerHeight - 80;
-
-            // Gera posição aleatória
-            const randomX = Math.floor(Math.random() * maxWidth);
-            const randomY = Math.floor(Math.random() * maxHeight);
-
-            // Aplica posição
-            seal.style.left = randomX + 'px';
-            seal.style.top = randomY + 'px';
-
-            // Faz aparecer
-            seal.classList.add('seal-visible');
-
-            // Faz desaparecer após 3 segundos
-            setTimeout(() => {
-                seal.classList.remove('seal-visible');
-            }, 3000); 
-        }
-
-        // Loop infinito: reposiciona e pisca a cada 6 segundos
-        setInterval(moveSeal, 6000);
-        // Primeira aparição rápida
-        setTimeout(moveSeal, 1000);
-
-        // --- BLOQUEIO DE SEGURANÇA ---
         function disableInspector(e) {
             if (e.keyCode == 123 || 
                 (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || 
@@ -266,11 +268,11 @@
                 return false;
             }
         }
+
         document.addEventListener('dragstart', function(e) {
             if (e.target.nodeName === 'IMG') e.preventDefault();
         });
 
-        // --- LÓGICA DO CRONÔMETRO ---
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
 
         function updateTimer() {
