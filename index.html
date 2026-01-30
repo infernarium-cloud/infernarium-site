@@ -27,7 +27,7 @@
             position: relative;
         }
 
-        /* --- SIDEBARS DE SELOS (ESQUERDA E DIREITA) --- */
+        /* --- SIDEBARS DE SELOS --- */
         .seal-sidebar {
             position: absolute;
             top: 50%;
@@ -49,7 +49,7 @@
             pointer-events: none;
         }
 
-        /* --- LETREIRO TOPO --- */
+        /* --- LETREIRO TOPO (FONTE DIMINUÍDA) --- */
         .header-wormhole {
             position: absolute;
             top: 20px;
@@ -73,7 +73,7 @@
             display: inline-block;
             white-space: nowrap;
             animation: wormhole-scroll 20s linear infinite;
-            font-size: 0.8rem;
+            font-size: 0.65rem; /* Fonte diminuída conforme solicitado */
             color: #2a2a2a;
             letter-spacing: 3px;
         }
@@ -96,7 +96,7 @@
         }
 
         .logo-container img {
-            max-width: 224px; /* Aumentado em +2px (Total 224px) */
+            max-width: 224px; 
             width: 80%; 
             height: auto;
             animation: slow-breath 8s infinite ease-in-out;
@@ -120,7 +120,6 @@
             white-space: nowrap; 
         }
 
-        /* --- CONTADOR COURIER COM GLITCH --- */
         #countdown {
             display: flex;
             gap: 12px;
@@ -157,7 +156,6 @@
             animation: slow-breath 8s infinite ease-in-out;
         }
 
-        /* --- RODAPÉ --- */
         .footer-credits {
             position: absolute;
             bottom: 25px;
@@ -169,7 +167,7 @@
             white-space: nowrap;
         }
 
-        /* --- KEYFRAMES --- */
+        /* --- ANIMAÇÕES --- */
         @keyframes pulse-red-text {
             0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
             50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
