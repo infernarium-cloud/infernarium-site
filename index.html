@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM | Samhain 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
         /* TRAVA DE SELEÇÃO GLOBAL */
         * {
@@ -36,15 +37,14 @@
             gap: 15px;
             align-items: center;
             z-index: 10;
-            flex-wrap: wrap; /* Permite quebra de linha se houver muitos selos em telas pequenas */
+            flex-wrap: wrap;
             max-width: 450px;
         }
 
         .seal-group img {
-            width: 42px; /* Ajuste fino para acomodar os 6 selos */
+            width: 42px;
             height: auto;
             opacity: 0.6;
-            /* Efeito de brilho vermelho estático conforme solicitado */
             filter: drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
             pointer-events: none;
         }
@@ -123,17 +123,29 @@
             white-space: nowrap; 
         }
 
+        /* AJUSTE FINO NA FONTE DO CONTADOR */
         #countdown {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             justify-content: center;
-            font-size: 1.1rem; 
+            font-size: 1.5rem; /* Aumentado levemente para destacar a fonte gótica */
             color: #700;
-            font-weight: bold;
+            font-family: 'UnifrakturMaguntia', serif;
+            font-weight: 400;
+            text-shadow: 0 0 5px rgba(119, 0, 0, 0.3);
         }
 
         .time-block { display: flex; flex-direction: column; align-items: center; }
-        .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+        
+        /* Rótulos mantidos em Courier para contraste moderno */
+        .label { 
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.45rem; 
+            color: #333; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-top: 4px; 
+        }
 
         .pulse-dot {
             width: 3px;
@@ -200,7 +212,7 @@
         @media (max-width: 550px) {
             .wormhole-container { width: 95vw; }
             .content { width: 240px; }
-            #countdown { font-size: 0.9rem; gap: 8px; }
+            #countdown { font-size: 1.2rem; gap: 10px; }
             .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
             .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 10px; justify-content: center; }
         }
