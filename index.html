@@ -27,23 +27,23 @@
             position: relative;
         }
 
-        /* --- GRUPO DE SELOS INFERIOR ESQUERDO --- */
+        /* --- GRUPO DE SELOS COM BLUR VERMELHO --- */
         .seal-group {
             position: absolute;
             bottom: 25px;
             left: 5%;
             display: flex;
-            gap: 15px; /* Espaço entre os selos */
+            gap: 15px;
             align-items: center;
             z-index: 10;
         }
 
         .seal-group img {
-            width: 50px; /* Tamanho pequeno */
+            width: 45px;
             height: auto;
-            opacity: 0.4;
-            filter: grayscale(100%);
-            animation: slow-breath 8s infinite ease-in-out;
+            opacity: 0.6; /* Aumentado levemente para destacar com o blur */
+            /* Efeito de blur vermelho estático (sem pulsação) */
+            filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
             pointer-events: none;
         }
 
@@ -214,21 +214,21 @@
             93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 550px) {
             .wormhole-container { width: 95vw; }
             .content { width: 240px; }
             #countdown { font-size: 0.9rem; gap: 8px; }
             .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
-            /* No mobile, centraliza os selos e sobe um pouco */
-            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); }
+            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 10px; }
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
     <div class="seal-group">
-        <img src="seal_01.png" alt="Seal 01" ondragstart="return false">
-        <img src="seal_02.png" alt="Seal 02" ondragstart="return false">
+        <img src="seal_01.png" alt="S01" ondragstart="return false">
+        <img src="seal_02.png" alt="S02" ondragstart="return false">
+        <img src="seal_03.png" alt="S03" ondragstart="return false">
     </div>
 
     <div class="header-wormhole">
@@ -299,14 +299,13 @@
             const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((distance % (1000 * 60)) / 1000);
 
-            const sFormatted = s.toString().padStart(2, '0');
             document.getElementById("days").innerText = d.toString().padStart(2, '0');
             document.getElementById("hours").innerText = h.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
             
             const secondsEl = document.getElementById("seconds");
-            secondsEl.innerText = sFormatted;
-            secondsEl.setAttribute('data-text', sFormatted);
+            secondsEl.innerText = s.toString().padStart(2, '0');
+            secondsEl.setAttribute('data-text', s.toString().padStart(2, '0'));
         }
 
         setInterval(updateTimer, 1000);
