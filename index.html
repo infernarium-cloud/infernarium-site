@@ -3,291 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INFERNARIUM | Samhain 2026</title>
+    <title>INFERNARIUM - Coming Soon</title>
     <style>
-        /* TRAVA DE SELEÇÃO GLOBAL */
-        * {
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Padrão */
-            -webkit-touch-callout: none; /* Impede menu de contexto no mobile */
-        }
-
         body {
             background-color: #050505;
-            color: #e0e0e0;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            position: relative;
+            cursor: pointer; /* Indica que a página é clicável */
         }
 
-        /* --- LETREIRO TOPO --- */
-        .header-wormhole {
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 10;
-        }
-
-        .wormhole-container {
-            width: 90vw;
-            max-width: 1000px;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        }
-
-        .scrolling-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: wormhole-scroll 20s linear infinite;
-            font-size: 0.8rem;
-            color: #2a2a2a;
-            letter-spacing: 3px;
-        }
-
-        .spacer-jp {
-            display: inline-block;
-            width: 115px;
-        }
-
-        .red-pulse {
-            color: #400;
-            font-weight: bold;
-            animation: pulse-red-text 2s infinite ease-in-out;
-        }
-
-        /* --- CONTEÚDO CENTRAL --- */
         .logo-container {
-            min-height: 200px; 
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .logo-container img {
-            max-width: 220px; 
-            width: 80%; 
-            height: auto;
-            animation: slow-breath 8s infinite ease-in-out;
-            pointer-events: none; /* Bloqueia interação direta com a imagem */
-        }
-
-        .content {
             text-align: center;
-            border-top: 1px solid #1a1a1a;
-            padding-top: 20px;
-            width: 280px; 
+            animation: breathe 4s ease-in-out infinite;
         }
 
-        h1 {
-            font-weight: 300;
-            letter-spacing: 2px; 
-            text-transform: uppercase;
-            font-size: 11px; 
-            color: #444;
-            margin-bottom: 20px;
-            white-space: nowrap; 
+        img {
+            max-width: 250px;
+            filter: grayscale(100%) contrast(120%);
+            user-select: none;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.03); opacity: 1; }
         }
 
         #countdown {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            font-size: 1.1rem; 
-            color: #700;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            letter-spacing: 7px;
+            color: #555;
             font-weight: bold;
         }
 
-        .time-block { display: flex; flex-direction: column; align-items: center; }
-        .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
-
         .pulse-dot {
-            width: 3px;
-            height: 3px;
-            background-color: #900;
+            width: 6px;
+            height: 6px;
+            background-color: #ff0000;
             border-radius: 50%;
-            margin: 25px auto 0 auto;
-            animation: slow-breath 8s infinite ease-in-out;
+            margin-top: 40px;
+            box-shadow: 0 0 15px #ff0000;
+            animation: pulse 2.5s infinite;
         }
 
-        /* --- CRÉDITOS RODAPÉ --- */
-        .footer-credits {
-            position: absolute;
-            bottom: 25px;
-            right: 5%;
-            font-size: 0.65rem;
-            color: #2a2a2a;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            white-space: nowrap;
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(2); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
-        /* --- EFEITOS GLITCH --- */
-        .glitch {
-            position: relative;
-            display: inline-block;
-            color: #800;
-            animation: glitch-flash 2.5s infinite steps(1); 
-        }
-
-        .glitch-move {
-            position: relative;
-            display: inline-block;
-            color: #800;
-            animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out;
-        }
-
-        .glitch-move::before, .glitch-move::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #050505; overflow: hidden;
-        }
-
-        .glitch-move::before {
-            left: 2px; text-shadow: -1px 0 #fff; 
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
-        }
-
-        .glitch-move::after {
-            left: -2px; text-shadow: -1px 0 #fff;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim-2 2s infinite linear alternate-reverse;
-        }
-
-        /* --- KEYFRAMES --- */
-        @keyframes pulse-red-text {
-            0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
-            50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
-        }
-
-        @keyframes wormhole-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        @keyframes slow-breath {
-            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
-            50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 1; }
-        }
-
-        @keyframes depth-move {
-            0%, 100% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        @keyframes glitch-flash {
-            0%, 92%, 94%, 97%, 100% { color: #800; text-shadow: none; }
-            93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
-        }
-
-        @media (max-width: 400px) {
-            .wormhole-container { width: 95vw; }
-            .content { width: 240px; }
-            #countdown { font-size: 0.9rem; gap: 8px; }
-            .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
+        /* Esconde o player visualmente */
+        #bgAudio {
+            display: none;
         }
     </style>
 </head>
-<body oncontextmenu="return false" onkeydown="return disableInspector(event)">
-
-    <div class="header-wormhole">
-        <div class="wormhole-container">
-            <div class="scrolling-text">
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-            </div>
-        </div>
-    </div>
+<body>
 
     <div class="logo-container">
-        <img src="logo.png" alt="[ INFERNARIUM ]" ondragstart="return false">
+        <img src="logo_inf.png" alt="INFERNARIUM">
     </div>
 
-    <div class="content">
-        <h1>Opening on Halloween 2026</h1>
-        <div id="countdown">
-            <div class="time-block"><span id="days">--</span><span class="label">Days</span></div>
-            <div class="time-block"><span id="hours">--</span><span class="label">Hrs</span></div>
-            <div class="time-block"><span id="minutes">--</span><span class="label">Min</span></div>
-            <div class="time-block">
-                <span id="seconds" class="glitch" data-text="--">--</span>
-                <span class="label">Sec</span>
-            </div>
-        </div>
-        <div class="pulse-dot"></div>
-    </div>
+    <div id="countdown">INICIALIZANDO...</div>
+    
+    <div class="pulse-dot"></div>
 
-    <div class="footer-credits">
-        Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
-    </div>
+    <audio id="bgAudio" loop preload="auto">
+        <source src="notfound.ogg" type="audio/ogg">
+        Seu navegador não suporta o formato de áudio.
+    </audio>
 
     <script>
-        // --- BLOQUEIO DE SEGURANÇA ---
-        function disableInspector(e) {
-            // Bloqueia F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-            if (e.keyCode == 123 || 
-                (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || 
-                (e.ctrlKey && e.keyCode == 85)) {
-                return false;
-            }
-        }
+        // Configuração do Countdown: 31 de Outubro de 2026
+        const launchDate = new Date("Oct 31, 2026 00:00:00").getTime();
 
-        // Impede arrastar qualquer imagem
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.nodeName === 'IMG') e.preventDefault();
-        });
-
-        // --- LÓGICA DO CRONÔMETRO ---
-        const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
-
-        function updateTimer() {
+        const timer = setInterval(function() {
             const now = new Date().getTime();
-            const distance = targetDate - now;
+            const distance = launchDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
 
             if (distance < 0) {
-                document.getElementById("countdown").innerHTML = "ESTABLISHED";
-                return;
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "SISTEMA ONLINE";
             }
+        }, 1000);
 
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            const sFormatted = s.toString().padStart(2, '0');
-            document.getElementById("days").innerText = d.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = h.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
-            
-            const secondsEl = document.getElementById("seconds");
-            secondsEl.innerText = sFormatted;
-            secondsEl.setAttribute('data-text', sFormatted);
-        }
-
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        // Inicia o áudio no primeiro clique do usuário na página
+        document.body.addEventListener('click', function() {
+            const audio = document.getElementById("bgAudio");
+            audio.play().catch(error => console.log("Erro ao tocar áudio:", error));
+        }, { once: true });
     </script>
 </body>
 </html>
