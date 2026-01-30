@@ -5,139 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM - Coming Soon</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: #050505;
-            color: #e0e0e0;
+            color: #fff;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            text-align: center;
+            height: 100vh;
             overflow: hidden;
-            cursor: pointer;
+            cursor: crosshair; /* Mantém o estilo visual */
         }
 
-        /* Container da Logo com tratamento para erro de carregamento */
         .logo-container {
-            width: 100%;
-            max-width: 300px;
-            margin-bottom: 30px;
-            animation: breathe 5s ease-in-out infinite;
+            text-align: center;
+            animation: breathe 4s ease-in-out infinite;
+            margin-bottom: 20px;
         }
 
-        .logo-container img {
-            width: 100%;
-            height: auto;
-            filter: grayscale(100%) contrast(110%);
-            display: block;
+        img {
+            max-width: 250px;
+            filter: grayscale(100%) contrast(120%);
         }
 
         @keyframes breathe {
             0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.04); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 1; }
         }
 
         #countdown {
-            font-size: 1.4rem;
-            letter-spacing: 6px;
-            color: #666;
-            margin-bottom: 25px;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: #444;
+            margin-bottom: 20px;
         }
 
-        /* Indicador de status do áudio */
-        #status {
-            font-size: 0.6rem;
-            color: #222;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: color 0.5s;
-        }
-
-        .dot {
-            width: 6px;
-            height: 6px;
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
             background-color: #ff0000;
             border-radius: 50%;
-            margin: 20px auto;
-            box-shadow: 0 0 12px #ff0000;
+            box-shadow: 0 0 10px #ff0000;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(2.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0.9); opacity: 0.7; }
+            70% { transform: scale(1.5); opacity: 0; }
+            100% { transform: scale(0.9); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
     <div class="logo-container">
-        <img src="logo_inf.png" alt="INFERNARIUM" id="mainLogo">
+        <img src="logo_inf.png" alt="INFERNARIUM">
     </div>
 
     <div id="countdown">CARREGANDO...</div>
     
-    <div class="dot"></div>
-
-    <div id="status">SISTEMA OFFLINE - CLIQUE PARA INICIAR</div>
+    <div class="pulse-dot"></div>
 
     <script>
-        // 1. Gerenciamento do Áudio via JS (Forma mais estável)
-        const audio = new Audio();
-        audio.src = 'notfound.ogg'; // Seu arquivo convertido
-        audio.loop = true;
-        audio.preload = 'auto';
+        // 1. GERENCIAMENTO DE ÁUDIO INVISÍVEL
+        // Criamos o áudio via JS para ele não ocupar espaço no HTML/DOM
+        const bgAudio = new Audio('notfound.ogg');
+        bgAudio.loop = true;
+        bgAudio.volume = 0.5; // Volume inicial em 50%
 
-        let audioReady = false;
+        // Função para dar play após o primeiro clique (exigência dos navegadores)
+        const startAudio = () => {
+            bgAudio.play().catch(e => console.log("Aguardando interação..."));
+            document.removeEventListener('click', startAudio);
+        };
 
-        audio.addEventListener('canplaythrough', () => {
-            audioReady = true;
-            console.log("Áudio carregado e pronto.");
-        });
+        document.addEventListener('click', startAudio);
 
-        // Interação do usuário para dar Play (Exigência do Navegador)
-        document.body.addEventListener('click', () => {
-            audio.play().then(() => {
-                document.getElementById('status').innerText = "SISTEMA ONLINE";
-                document.getElementById('status').style.color = "#444";
-            }).catch(err => console.log("Aguardando interação..."));
-        }, { once: true });
-
-        // 2. Countdown: 31 de Outubro de 2026
+        // 2. COUNTDOWN (O que você já tinha)
         const launchDate = new Date("Oct 31, 2026 00:00:00").getTime();
 
-        setInterval(() => {
+        setInterval(function() {
             const now = new Date().getTime();
             const distance = launchDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            if (distance < 0) {
-                document.getElementById("countdown").innerText = "OPEN NOW";
-                return;
-            }
-
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerText = `${d}D ${h}H ${m}M ${s}S`;
+            document.getElementById("countdown").innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
         }, 1000);
-
-        // Fallback para imagem da logo
-        document.getElementById('mainLogo').onerror = function() {
-            console.error("Erro ao carregar a logo. Verifique o nome do arquivo.");
-            this.style.border = "1px solid #333";
-            this.style.padding = "10px";
-        };
     </script>
 </body>
 </html>
