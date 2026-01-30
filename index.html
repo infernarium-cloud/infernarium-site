@@ -27,23 +27,24 @@
             position: relative;
         }
 
-        /* --- GRUPO DE SELOS COM BLUR VERMELHO --- */
+        /* --- GRUPO DE SELOS COMPLETO (01, 02, 03 + 15, 16, 17) --- */
         .seal-group {
             position: absolute;
             bottom: 25px;
             left: 5%;
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
             z-index: 10;
+            flex-wrap: wrap; /* Garante que caibam em telas menores */
+            max-width: 400px;
         }
 
         .seal-group img {
-            width: 45px;
+            width: 42px; /* Reduzi levemente o tamanho para acomodar todos na linha */
             height: auto;
-            opacity: 0.6; /* Aumentado levemente para destacar com o blur */
-            /* Efeito de blur vermelho estático (sem pulsação) */
-            filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
+            opacity: 0.6;
+            filter: drop-shadow(0 0 5px rgba(200, 0, 0, 0.6));
             pointer-events: none;
         }
 
@@ -169,25 +170,6 @@
             animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out;
         }
 
-        .glitch-move::before, .glitch-move::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #050505; overflow: hidden;
-        }
-
-        .glitch-move::before {
-            left: 2px; text-shadow: -1px 0 #fff; 
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
-        }
-
-        .glitch-move::after {
-            left: -2px; text-shadow: -1px 0 #fff;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim-2 2s infinite linear alternate-reverse;
-        }
-
         /* --- KEYFRAMES --- */
         @keyframes pulse-red-text {
             0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
@@ -214,21 +196,21 @@
             93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
         }
 
-        @media (max-width: 550px) {
-            .wormhole-container { width: 95vw; }
-            .content { width: 240px; }
-            #countdown { font-size: 0.9rem; gap: 8px; }
+        @media (max-width: 600px) {
             .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
-            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 10px; }
+            .seal-group { left: 50%; bottom: 60px; transform: translateX(-50%); justify-content: center; width: 90%; }
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
     <div class="seal-group">
-        <img src="seal_01.png" alt="S01" ondragstart="return false">
-        <img src="seal_02.png" alt="S02" ondragstart="return false">
-        <img src="seal_03.png" alt="S03" ondragstart="return false">
+        <img src="seal_01.png" alt="S01">
+        <img src="seal_02.png" alt="S02">
+        <img src="seal_03.png" alt="S03">
+        <img src="seal_15.png" alt="S15">
+        <img src="seal_16.png" alt="S16">
+        <img src="seal_17.png" alt="S17">
     </div>
 
     <div class="header-wormhole">
@@ -296,20 +278,4 @@
 
             const d = Math.floor(distance / (1000 * 60 * 60 * 24));
             const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = d.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = h.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
-            
-            const secondsEl = document.getElementById("seconds");
-            secondsEl.innerText = s.toString().padStart(2, '0');
-            secondsEl.setAttribute('data-text', s.toString().padStart(2, '0'));
-        }
-
-        setInterval(updateTimer, 1000);
-        updateTimer();
-    </script>
-</body>
-</html>
+            const m = Math.floor((distance % (1000 * 60 * 6
