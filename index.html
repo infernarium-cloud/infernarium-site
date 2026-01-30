@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM | Samhain 2026</title>
     <style>
+        /* TRAVA DE SELEÇÃO GLOBAL */
+        * {
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Padrão */
+            -webkit-touch-callout: none; /* Impede menu de contexto no mobile */
+        }
+
         body {
             background-color: #050505;
             color: #e0e0e0;
@@ -19,7 +27,7 @@
             position: relative;
         }
 
-        /* --- LETREIRO TOPO (WORMHOLE) --- */
+        /* --- LETREIRO TOPO --- */
         .header-wormhole {
             position: absolute;
             top: 20px;
@@ -30,7 +38,7 @@
         }
 
         .wormhole-container {
-            width: 90vw; /* Responsivo para PC e Celular */
+            width: 90vw;
             max-width: 1000px;
             overflow: hidden;
             white-space: nowrap;
@@ -50,10 +58,9 @@
 
         .spacer-jp {
             display: inline-block;
-            width: 115px; /* Aprox. 3cm */
+            width: 115px;
         }
 
-        /* Palavra Pulsante em Vermelho */
         .red-pulse {
             color: #400;
             font-weight: bold;
@@ -71,9 +78,10 @@
 
         .logo-container img {
             max-width: 220px; 
-            width: 80%; /* Ajuste para mobile */
+            width: 80%; 
             height: auto;
             animation: slow-breath 8s infinite ease-in-out;
+            pointer-events: none; /* Bloqueia interação direta com a imagem */
         }
 
         .content {
@@ -114,7 +122,7 @@
             animation: slow-breath 8s infinite ease-in-out;
         }
 
-        /* --- CRÉDITOS RODAPÉ (CANTO DIREITO) --- */
+        /* --- CRÉDITOS RODAPÉ --- */
         .footer-credits {
             position: absolute;
             bottom: 25px;
@@ -126,7 +134,7 @@
             white-space: nowrap;
         }
 
-        /* --- EFEITOS DE GLITCH --- */
+        /* --- EFEITOS GLITCH --- */
         .glitch {
             position: relative;
             display: inline-block;
@@ -186,17 +194,6 @@
             93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
         }
 
-        @keyframes glitch-anim-1 {
-            0% { clip: rect(20px, 9999px, 15px, 0); }
-            100% { clip: rect(0, 9999px, 0, 0); }
-        }
-
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(85px, 9999px, 100px, 0); }
-            100% { clip: rect(0, 9999px, 0, 0); }
-        }
-
-        /* Responsividade para Celulares Pequenos */
         @media (max-width: 400px) {
             .wormhole-container { width: 95vw; }
             .content { width: 240px; }
@@ -205,7 +202,7 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
     <div class="header-wormhole">
         <div class="wormhole-container">
@@ -225,7 +222,7 @@
     </div>
 
     <div class="logo-container">
-        <img src="logo.png" alt="[ INFERNARIUM ]">
+        <img src="logo.png" alt="[ INFERNARIUM ]" ondragstart="return false">
     </div>
 
     <div class="content">
@@ -247,6 +244,22 @@
     </div>
 
     <script>
+        // --- BLOQUEIO DE SEGURANÇA ---
+        function disableInspector(e) {
+            // Bloqueia F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || 
+                (e.ctrlKey && e.keyCode == 85)) {
+                return false;
+            }
+        }
+
+        // Impede arrastar qualquer imagem
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.nodeName === 'IMG') e.preventDefault();
+        });
+
+        // --- LÓGICA DO CRONÔMETRO ---
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
 
         function updateTimer() {
@@ -264,7 +277,6 @@
             const s = Math.floor((distance % (1000 * 60)) / 1000);
 
             const sFormatted = s.toString().padStart(2, '0');
-
             document.getElementById("days").innerText = d.toString().padStart(2, '0');
             document.getElementById("hours").innerText = h.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
