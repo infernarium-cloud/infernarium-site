@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM - Coming Soon</title>
     <style>
-        /* CSS IDENTICO AO QUE FUNCIONA */
+        /* --- ESTILO BASE (INTACTO) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             background-color: #050505;
             color: #fff;
@@ -15,28 +17,36 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* Importante para o selo não criar barra de rolagem */
+            cursor: pointer;
+            position: relative; /* Referência para elementos absolutos */
         }
+
         .logo-container {
             text-align: center;
             animation: breathe 4s ease-in-out infinite;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            z-index: 10; /* Garante que a logo fique acima do selo */
         }
-        img {
+
+        img.main-logo {
             max-width: 250px;
             filter: grayscale(100%) contrast(120%);
         }
+
         @keyframes breathe {
             0%, 100% { transform: scale(1); opacity: 0.7; }
             50% { transform: scale(1.05); opacity: 1; }
         }
+
         #countdown {
             font-size: 1.5rem;
             letter-spacing: 5px;
             color: #444;
             margin-bottom: 20px;
+            z-index: 10;
         }
+
         .pulse-dot {
             width: 8px;
             height: 8px;
@@ -44,38 +54,79 @@
             border-radius: 50%;
             box-shadow: 0 0 10px #ff0000;
             animation: pulse 2s infinite;
+            z-index: 10;
         }
+
         @keyframes pulse {
             0% { transform: scale(0.9); opacity: 0.7; }
             70% { transform: scale(1.5); opacity: 0; }
             100% { transform: scale(0.9); opacity: 0; }
         }
+
+        /* --- ESTILO DO SELO MISTERIOSO --- */
+        #seal {
+            position: absolute;
+            width: 60px; /* Tamanho pequeno */
+            opacity: 0; /* Começa invisível */
+            transition: opacity 2s ease-in-out; /* Aparição lenta */
+            filter: grayscale(100%) brightness(40%); /* Aspecto sombrio */
+            pointer-events: none; /* Não interfere no clique do usuário */
+            z-index: 1; /* Fica atrás do texto principal */
+        }
+
+        .seal-visible {
+            opacity: 0.4 !important; /* Visibilidade fantasma (transparente) */
+        }
     </style>
 </head>
-<body onclick="playAudio()">
+<body>
 
     <div class="logo-container">
-        <img src="logo_inf.png" alt="INFERNARIUM">
+        <img src="logo_inf.png" alt="INFERNARIUM" class="main-logo">
     </div>
 
     <div id="countdown">CARREGANDO...</div>
+    
     <div class="pulse-dot"></div>
 
+    <img id="seal" src="seal_01.png" alt="">
+
     <script>
-        // FUNÇÃO DE ÁUDIO TOTALMENTE ISOLADA
-        var audioStarted = false;
-        function playAudio() {
-            if (!audioStarted) {
-                var audio = new Audio('notfound.ogg');
-                audio.loop = true;
-                audio.play();
-                audioStarted = true;
-                console.log("Áudio ativado.");
-            }
+        // 1. LÓGICA DO SELO FANTASMA
+        const seal = document.getElementById('seal');
+        
+        function moveSeal() {
+            // Define limites para o selo não sair da tela
+            const maxWidth = window.innerWidth - 100;
+            const maxHeight = window.innerHeight - 100;
+
+            // Gera posição aleatória
+            const randomX = Math.floor(Math.random() * maxWidth);
+            const randomY = Math.floor(Math.random() * maxHeight);
+
+            // Aplica a nova posição
+            seal.style.left = randomX + 'px';
+            seal.style.top = randomY + 'px';
+
+            // Faz aparecer
+            seal.classList.add('seal-visible');
+
+            // Agenda para desaparecer depois de um tempo
+            setTimeout(() => {
+                seal.classList.remove('seal-visible');
+            }, 3000); // Fica visível por 3 segundos
         }
 
-        // COUNTDOWN ORIGINAL
+        // Ciclo infinito: muda de lugar e aparece a cada 6 segundos
+        setInterval(moveSeal, 6000);
+        
+        // Primeira aparição imediata (opcional)
+        setTimeout(moveSeal, 1000);
+
+
+        // 2. COUNTDOWN (Original)
         const launchDate = new Date("Oct 31, 2026 00:00:00").getTime();
+
         setInterval(function() {
             const now = new Date().getTime();
             const distance = launchDate - now;
@@ -83,8 +134,16 @@
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("countdown").innerHTML = days + "D " + hours + "H " + minutes + "M " + seconds + "S";
+
+            document.getElementById("countdown").innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
         }, 1000);
+
+        // 3. TRAVA DE INTERAÇÃO (Mantida conforme solicitado)
+        document.body.addEventListener('click', function() {
+            // Lógica pronta para quando resolvermos o áudio. 
+            // Por enquanto, serve para manter o comportamento de "clique para iniciar".
+            console.log("Interação registrada."); 
+        }, { once: true });
     </script>
 </body>
 </html>
