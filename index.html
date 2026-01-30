@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM - Coming Soon</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        /* CSS IDENTICO AO QUE FUNCIONA */
         body {
             background-color: #050505;
             color: #fff;
@@ -16,33 +15,28 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            margin: 0;
             overflow: hidden;
-            cursor: crosshair; /* Mantém o estilo visual */
         }
-
         .logo-container {
             text-align: center;
             animation: breathe 4s ease-in-out infinite;
             margin-bottom: 20px;
         }
-
         img {
             max-width: 250px;
             filter: grayscale(100%) contrast(120%);
         }
-
         @keyframes breathe {
             0%, 100% { transform: scale(1); opacity: 0.7; }
             50% { transform: scale(1.05); opacity: 1; }
         }
-
         #countdown {
             font-size: 1.5rem;
             letter-spacing: 5px;
             color: #444;
             margin-bottom: 20px;
         }
-
         .pulse-dot {
             width: 8px;
             height: 8px;
@@ -51,7 +45,6 @@
             box-shadow: 0 0 10px #ff0000;
             animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
             0% { transform: scale(0.9); opacity: 0.7; }
             70% { transform: scale(1.5); opacity: 0; }
@@ -59,34 +52,30 @@
         }
     </style>
 </head>
-<body>
+<body onclick="playAudio()">
 
     <div class="logo-container">
         <img src="logo_inf.png" alt="INFERNARIUM">
     </div>
 
     <div id="countdown">CARREGANDO...</div>
-    
     <div class="pulse-dot"></div>
 
     <script>
-        // 1. GERENCIAMENTO DE ÁUDIO INVISÍVEL
-        // Criamos o áudio via JS para ele não ocupar espaço no HTML/DOM
-        const bgAudio = new Audio('notfound.ogg');
-        bgAudio.loop = true;
-        bgAudio.volume = 0.5; // Volume inicial em 50%
+        // FUNÇÃO DE ÁUDIO TOTALMENTE ISOLADA
+        var audioStarted = false;
+        function playAudio() {
+            if (!audioStarted) {
+                var audio = new Audio('notfound.ogg');
+                audio.loop = true;
+                audio.play();
+                audioStarted = true;
+                console.log("Áudio ativado.");
+            }
+        }
 
-        // Função para dar play após o primeiro clique (exigência dos navegadores)
-        const startAudio = () => {
-            bgAudio.play().catch(e => console.log("Aguardando interação..."));
-            document.removeEventListener('click', startAudio);
-        };
-
-        document.addEventListener('click', startAudio);
-
-        // 2. COUNTDOWN (O que você já tinha)
+        // COUNTDOWN ORIGINAL
         const launchDate = new Date("Oct 31, 2026 00:00:00").getTime();
-
         setInterval(function() {
             const now = new Date().getTime();
             const distance = launchDate - now;
@@ -94,8 +83,7 @@
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+            document.getElementById("countdown").innerHTML = days + "D " + hours + "H " + minutes + "M " + seconds + "S";
         }, 1000);
     </script>
 </body>
