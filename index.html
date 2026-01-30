@@ -28,21 +28,21 @@
             position: relative;
         }
 
-        /* --- GRUPO DE SELOS COM BLUR VERMELHO --- */
+        /* --- GRUPO DE SELOS EXPANDIDO --- */
         .seal-group {
             position: absolute;
             bottom: 25px;
             left: 5%;
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
             z-index: 10;
-            flex-wrap: wrap;
-            max-width: 450px;
+            flex-wrap: wrap; 
+            max-width: 500px; /* Aumentado para suportar a nova quantidade */
         }
 
         .seal-group img {
-            width: 42px;
+            width: 38px; /* Reduzi levemente o tamanho individual para manter a harmonia do grupo */
             height: auto;
             opacity: 0.6;
             filter: drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
@@ -123,12 +123,12 @@
             white-space: nowrap; 
         }
 
-        /* AJUSTE FINO NA FONTE DO CONTADOR */
+        /* FONTE GÓTICA NO CONTADOR */
         #countdown {
             display: flex;
             gap: 15px;
             justify-content: center;
-            font-size: 1.5rem; /* Aumentado levemente para destacar a fonte gótica */
+            font-size: 1.5rem;
             color: #700;
             font-family: 'UnifrakturMaguntia', serif;
             font-weight: 400;
@@ -137,7 +137,6 @@
 
         .time-block { display: flex; flex-direction: column; align-items: center; }
         
-        /* Rótulos mantidos em Courier para contraste moderno */
         .label { 
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.45rem; 
@@ -214,19 +213,24 @@
             .content { width: 240px; }
             #countdown { font-size: 1.2rem; gap: 10px; }
             .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
-            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 10px; justify-content: center; }
+            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 8px; justify-content: center; width: 90%; }
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
     <div class="seal-group">
-        <img src="seal_01.png" alt="S01" ondragstart="return false">
-        <img src="seal_02.png" alt="S02" ondragstart="return false">
-        <img src="seal_03.png" alt="S03" ondragstart="return false">
-        <img src="seal_15.png" alt="S15" ondragstart="return false">
-        <img src="seal_16.png" alt="S16" ondragstart="return false">
-        <img src="seal_17.png" alt="S17" ondragstart="return false">
+        <img src="seal_01.png" alt="S01">
+        <img src="seal_02.png" alt="S02">
+        <img src="seal_03.png" alt="S03">
+        <img src="seal_15.png" alt="S15">
+        <img src="seal_16.png" alt="S16">
+        <img src="seal_17.png" alt="S17">
+        <img src="seal_20.png" alt="S20">
+        <img src="seal_14.png" alt="S14">
+        <img src="seal_13.png" alt="S13">
+        <img src="seal_12.png" alt="S12">
+        <img src="seal_11.png" alt="S11">
     </div>
 
     <div class="header-wormhole">
