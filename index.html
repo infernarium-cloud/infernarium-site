@@ -19,76 +19,19 @@
             position: relative;
         }
 
-        /* Container da Logo */
-        .logo-container {
-            min-height: 250px; 
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .logo-container img {
-            max-width: 250px; 
-            width: 100%;
-            height: auto;
-            display: block;
-            animation: slow-breath 8s infinite ease-in-out;
-        }
-
-        .content {
-            text-align: center;
-            border-top: 1px solid #1a1a1a;
-            padding-top: 20px;
-            width: 250px; 
-        }
-
-        h1 {
-            font-weight: 300;
-            letter-spacing: 2px; 
-            text-transform: uppercase;
-            font-size: 12px; 
-            color: #444;
-            margin-bottom: 20px;
-            white-space: nowrap; 
-        }
-
-        /* Contador */
-        #countdown {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            font-size: 1.2rem; 
-            color: #700;
-            font-weight: bold;
-        }
-
-        .time-block { display: flex; flex-direction: column; align-items: center; }
-        .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
-
-        /* Ponto Vermelho */
-        .pulse-dot {
-            width: 3px;
-            height: 3px;
-            background-color: #900;
-            border-radius: 50%;
-            margin: 30px auto 0 auto;
-            animation: slow-breath 8s infinite ease-in-out;
-        }
-
-        /* --- RODAPÉ UNIFICADO --- */
-        .footer-outer-container {
+        /* --- LETREIRO TOPO (WORMHOLE) --- */
+        .header-wormhole {
             position: absolute;
-            bottom: 25px;
-            width: 95%; /* Margem nas laterais */
+            top: 20px;
+            width: 100%;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            z-index: 10;
         }
 
-        /* Letreiro Japonês (Túnel) */
         .wormhole-container {
-            width: 60%; /* Ocupa a maior parte da esquerda/centro */
+            width: 90vw; /* Responsivo para PC e Celular */
+            max-width: 1000px;
             overflow: hidden;
             white-space: nowrap;
             position: relative;
@@ -99,41 +42,91 @@
         .scrolling-text {
             display: inline-block;
             white-space: nowrap;
-            animation: wormhole-scroll 25s linear infinite;
-            font-size: 0.7rem;
+            animation: wormhole-scroll 20s linear infinite;
+            font-size: 0.8rem;
             color: #2a2a2a;
             letter-spacing: 3px;
         }
 
-        .scrolling-text span {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        /* Espaçamento de 3cm (aprox 115px) */
         .spacer-jp {
             display: inline-block;
-            width: 115px;
+            width: 115px; /* Aprox. 3cm */
         }
 
-        /* Efeito Tornado */
-        .tornado {
-            display: inline-block;
-            animation: tornado-anim 4s ease-in-out infinite;
-            color: #500;
+        /* Palavra Pulsante em Vermelho */
+        .red-pulse {
+            color: #400;
+            font-weight: bold;
+            animation: pulse-red-text 2s infinite ease-in-out;
         }
 
-        /* Créditos no Canto Direito */
+        /* --- CONTEÚDO CENTRAL --- */
+        .logo-container {
+            min-height: 200px; 
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 220px; 
+            width: 80%; /* Ajuste para mobile */
+            height: auto;
+            animation: slow-breath 8s infinite ease-in-out;
+        }
+
+        .content {
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 20px;
+            width: 280px; 
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+            font-size: 11px; 
+            color: #444;
+            margin-bottom: 20px;
+            white-space: nowrap; 
+        }
+
+        #countdown {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            font-size: 1.1rem; 
+            color: #700;
+            font-weight: bold;
+        }
+
+        .time-block { display: flex; flex-direction: column; align-items: center; }
+        .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+
+        .pulse-dot {
+            width: 3px;
+            height: 3px;
+            background-color: #900;
+            border-radius: 50%;
+            margin: 25px auto 0 auto;
+            animation: slow-breath 8s infinite ease-in-out;
+        }
+
+        /* --- CRÉDITOS RODAPÉ (CANTO DIREITO) --- */
         .footer-credits {
-            font-size: 0.7rem;
+            position: absolute;
+            bottom: 25px;
+            right: 5%;
+            font-size: 0.65rem;
             color: #2a2a2a;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             white-space: nowrap;
-            cursor: default;
         }
 
-        /* --- CLASSES DE GLITCH --- */
+        /* --- EFEITOS DE GLITCH --- */
         .glitch {
             position: relative;
             display: inline-block;
@@ -151,33 +144,26 @@
         .glitch-move::before, .glitch-move::after {
             content: attr(data-text);
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #050505;
-            overflow: hidden;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505; overflow: hidden;
         }
 
         .glitch-move::before {
-            left: 2px;
-            text-shadow: -1px 0 #fff; 
+            left: 2px; text-shadow: -1px 0 #fff; 
             clip: rect(24px, 550px, 90px, 0);
             animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
         }
 
         .glitch-move::after {
-            left: -2px;
-            text-shadow: -1px 0 #fff;
+            left: -2px; text-shadow: -1px 0 #fff;
             clip: rect(85px, 550px, 140px, 0);
             animation: glitch-anim-2 2s infinite linear alternate-reverse;
         }
 
         /* --- KEYFRAMES --- */
-        @keyframes tornado-anim {
-            0% { transform: rotate(0deg) scale(1); filter: blur(0px); }
-            50% { transform: rotate(360deg) scale(1.4); filter: blur(1px); color: #900; }
-            100% { transform: rotate(720deg) scale(1); filter: blur(0px); }
+        @keyframes pulse-red-text {
+            0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
+            50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
         }
 
         @keyframes wormhole-scroll {
@@ -185,43 +171,58 @@
             100% { transform: translateX(-50%); }
         }
 
-        @keyframes depth-move {
-            0% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 10px rgba(136, 0, 0, 0.5); }
-            100% { transform: scale(0.9); opacity: 0.8; }
+        @keyframes slow-breath {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 1; }
         }
 
-        @keyframes slow-breath {
-            0% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
-            50% { filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.4)); opacity: 1; }
-            100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
+        @keyframes depth-move {
+            0%, 100% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
         }
 
         @keyframes glitch-flash {
-            0% { color: #800; text-shadow: none; }
-            92% { color: #800; text-shadow: none; }
-            93% { color: #fff; text-shadow: 0 0 5px #fff, 0 0 10px #f00; }
-            94% { color: #800; text-shadow: none; }
-            96% { color: #fff; text-shadow: 0 0 5px #fff; }
-            97% { color: #800; text-shadow: none; }
-            100% { color: #800; text-shadow: none; }
+            0%, 92%, 94%, 97%, 100% { color: #800; text-shadow: none; }
+            93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
         }
 
         @keyframes glitch-anim-1 {
-            0% { clip: rect(20px, 9999px, 15px, 0); transform: skew(0.5deg); }
-            10% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
-            50% { clip: rect(40px, 9999px, 60px, 0); transform: skew(-5deg); }
-            100% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+            0% { clip: rect(20px, 9999px, 15px, 0); }
+            100% { clip: rect(0, 9999px, 0, 0); }
         }
 
         @keyframes glitch-anim-2 {
-            0% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
-            45% { clip: rect(10px, 9999px, 50px, 0); transform: skew(5deg); }
-            100% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+            0% { clip: rect(85px, 9999px, 100px, 0); }
+            100% { clip: rect(0, 9999px, 0, 0); }
+        }
+
+        /* Responsividade para Celulares Pequenos */
+        @media (max-width: 400px) {
+            .wormhole-container { width: 95vw; }
+            .content { width: 240px; }
+            #countdown { font-size: 0.9rem; gap: 8px; }
+            .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
         }
     </style>
 </head>
 <body>
+
+    <div class="header-wormhole">
+        <div class="wormhole-container">
+            <div class="scrolling-text">
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+            </div>
+        </div>
+    </div>
 
     <div class="logo-container">
         <img src="logo.png" alt="[ INFERNARIUM ]">
@@ -229,40 +230,20 @@
 
     <div class="content">
         <h1>Opening on Halloween 2026</h1>
-        
         <div id="countdown">
             <div class="time-block"><span id="days">--</span><span class="label">Days</span></div>
             <div class="time-block"><span id="hours">--</span><span class="label">Hrs</span></div>
             <div class="time-block"><span id="minutes">--</span><span class="label">Min</span></div>
-            
             <div class="time-block">
                 <span id="seconds" class="glitch" data-text="--">--</span>
                 <span class="label">Sec</span>
             </div>
         </div>
-
         <div class="pulse-dot"></div>
     </div>
 
-    <div class="footer-outer-container">
-        <div class="wormhole-container">
-            <div class="scrolling-text">
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="tornado">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="tornado">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-            </div>
-        </div>
-
-        <div class="footer-credits">
-            Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
-        </div>
+    <div class="footer-credits">
+        Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
     </div>
 
     <script>
