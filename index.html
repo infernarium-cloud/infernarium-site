@@ -27,17 +27,19 @@
             position: relative;
         }
 
-        /* --- SIDEBAR DE SELOS (VERTICAL +1px) --- */
+        /* --- SIDEBARS DE SELOS (ESQUERDA E DIREITA) --- */
         .seal-sidebar {
             position: absolute;
-            left: 20px;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             z-index: 10;
         }
+
+        .seal-left { left: 20px; }
+        .seal-right { right: 20px; }
 
         .seal-sidebar img {
             width: 46px; 
@@ -131,7 +133,6 @@
         .time-block { display: flex; flex-direction: column; align-items: center; }
         .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
 
-        /* --- EFEITOS GLITCH (RESTAURADOS) --- */
         .glitch {
             position: relative;
             display: inline-block;
@@ -183,37 +184,33 @@
             93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
         }
 
-        @media (max-width: 650px) {
-            .seal-sidebar { 
-                flex-direction: row; 
-                top: auto; 
-                bottom: 70px; 
-                left: 50%; 
-                transform: translateX(-50%); 
-                width: 95%; 
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .seal-sidebar img { width: 32px; }
+        @media (max-width: 800px) {
+            .seal-sidebar { display: none; } /* Oculta laterais em telas muito pequenas para não poluir */
             .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
-    <div class="seal-sidebar">
+    <div class="seal-sidebar seal-left">
         <img src="seal_01.png" alt="S01">
         <img src="seal_02.png" alt="S02">
         <img src="seal_03.png" alt="S03">
+        <img src="seal_08.png" alt="S08">
+        <img src="seal_09.png" alt="S09">
+        <img src="seal_10.png" alt="S10">
+        <img src="seal_11.png" alt="S11">
+        <img src="seal_12.png" alt="S12">
+        <img src="seal_13.png" alt="S13">
+        <img src="seal_14.png" alt="S14">
+    </div>
+
+    <div class="seal-sidebar seal-right">
         <img src="seal_15.png" alt="S15">
         <img src="seal_16.png" alt="S16">
         <img src="seal_17.png" alt="S17">
         <img src="seal_20.png" alt="S20">
-        <img src="seal_14.png" alt="S14">
-        <img src="seal_13.png" alt="S13">
-        <img src="seal_12.png" alt="S12">
-        <img src="seal_11.png" alt="S11">
-    </div>
+        </div>
 
     <div class="header-wormhole">
         <div class="wormhole-container">
@@ -223,8 +220,6 @@
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
             </div>
         </div>
@@ -282,7 +277,7 @@
             
             const secondsEl = document.getElementById("seconds");
             secondsEl.innerText = sStr;
-            secondsEl.setAttribute('data-text', sStr); // Atualiza o data-text para o glitch
+            secondsEl.setAttribute('data-text', sStr);
         }
 
         setInterval(updateTimer, 1000);
