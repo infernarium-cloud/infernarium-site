@@ -28,7 +28,6 @@
             margin-bottom: 20px;
         }
 
-        /* Logo */
         .logo-container img {
             max-width: 250px; 
             width: 100%;
@@ -77,17 +76,19 @@
             animation: slow-breath 8s infinite ease-in-out;
         }
 
-        /* --- NOVO RODAPÉ COM EFEITO TÚNEL --- */
-        .footer-wrapper {
+        /* --- RODAPÉ UNIFICADO --- */
+        .footer-outer-container {
             position: absolute;
             bottom: 25px;
-            width: 100%;
+            width: 95%; /* Margem nas laterais */
             display: flex;
-            justify-content: center;
+            align-items: center;
+            justify-content: space-between;
         }
 
+        /* Letreiro Japonês (Túnel) */
         .wormhole-container {
-            width: 600px; /* Janela de visualização do túnel */
+            width: 60%; /* Ocupa a maior parte da esquerda/centro */
             overflow: hidden;
             white-space: nowrap;
             position: relative;
@@ -98,25 +99,41 @@
         .scrolling-text {
             display: inline-block;
             white-space: nowrap;
-            animation: wormhole-scroll 18s linear infinite;
+            animation: wormhole-scroll 25s linear infinite;
+            font-size: 0.7rem;
+            color: #2a2a2a;
+            letter-spacing: 3px;
+        }
+
+        .scrolling-text span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Espaçamento de 3cm (aprox 115px) */
+        .spacer-jp {
+            display: inline-block;
+            width: 115px;
+        }
+
+        /* Efeito Tornado */
+        .tornado {
+            display: inline-block;
+            animation: tornado-anim 4s ease-in-out infinite;
+            color: #500;
+        }
+
+        /* Créditos no Canto Direito */
+        .footer-credits {
             font-size: 0.7rem;
             color: #2a2a2a;
             letter-spacing: 3px;
             text-transform: uppercase;
+            white-space: nowrap;
+            cursor: default;
         }
 
-        .scrolling-text span {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        /* Espaçamento de 5cm (aprox 190px) */
-        .spacer {
-            display: inline-block;
-            width: 190px;
-        }
-
-        /* --- CLASSES DE EFEITO --- */
+        /* --- CLASSES DE GLITCH --- */
         .glitch {
             position: relative;
             display: inline-block;
@@ -131,7 +148,6 @@
             animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out;
         }
 
-        .glitch::before, .glitch::after,
         .glitch-move::before, .glitch-move::after {
             content: attr(data-text);
             position: absolute;
@@ -143,14 +159,14 @@
             overflow: hidden;
         }
 
-        .glitch::before, .glitch-move::before {
+        .glitch-move::before {
             left: 2px;
             text-shadow: -1px 0 #fff; 
             clip: rect(24px, 550px, 90px, 0);
             animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
         }
 
-        .glitch::after, .glitch-move::after {
+        .glitch-move::after {
             left: -2px;
             text-shadow: -1px 0 #fff;
             clip: rect(85px, 550px, 140px, 0);
@@ -158,6 +174,12 @@
         }
 
         /* --- KEYFRAMES --- */
+        @keyframes tornado-anim {
+            0% { transform: rotate(0deg) scale(1); filter: blur(0px); }
+            50% { transform: rotate(360deg) scale(1.4); filter: blur(1px); color: #900; }
+            100% { transform: rotate(720deg) scale(1); filter: blur(0px); }
+        }
+
         @keyframes wormhole-scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
@@ -188,17 +210,13 @@
         @keyframes glitch-anim-1 {
             0% { clip: rect(20px, 9999px, 15px, 0); transform: skew(0.5deg); }
             10% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
-            20% { clip: rect(80px, 9999px, 95px, 0); transform: skew(5deg); }
             50% { clip: rect(40px, 9999px, 60px, 0); transform: skew(-5deg); }
-            80% { clip: rect(10px, 9999px, 20px, 0); transform: skew(10deg); }
             100% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
         }
 
         @keyframes glitch-anim-2 {
             0% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
-            15% { clip: rect(60px, 9999px, 70px, 0); transform: skew(-10deg); }
             45% { clip: rect(10px, 9999px, 50px, 0); transform: skew(5deg); }
-            75% { clip: rect(85px, 9999px, 100px, 0); transform: skew(-5deg); }
             100% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
         }
     </style>
@@ -226,14 +244,24 @@
         <div class="pulse-dot"></div>
     </div>
 
-    <div class="footer-wrapper">
+    <div class="footer-outer-container">
         <div class="wormhole-container">
             <div class="scrolling-text">
-                <span>商売繁盛</span><div class="spacer"></div>
-                <span>Design by <b style="color: #444;">KOOPER</b> 2026 &reg;</span><div class="spacer"></div>
-                <span>商売繁盛</span><div class="spacer"></div>
-                <span>Design by <b style="color: #444;">KOOPER</b> 2026 &reg;</span><div class="spacer"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span class="tornado">商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span class="tornado">商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
             </div>
+        </div>
+
+        <div class="footer-credits">
+            Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
         </div>
     </div>
 
