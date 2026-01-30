@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM | Samhain 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
+        /* IMPORTAÇÃO DA FONTE ROOMACH (Certifique-se que o arquivo está na pasta) */
+        @font-face {
+            font-family: 'Roomach';
+            src: url('Roomach.woff2') format('woff2'),
+                 url('Roomach.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         /* TRAVA DE SELEÇÃO GLOBAL */
         * {
             -webkit-user-select: none;
@@ -28,7 +36,7 @@
             position: relative;
         }
 
-        /* --- GRUPO DE SELOS EXPANDIDO --- */
+        /* --- GRUPO DE SELOS --- */
         .seal-group {
             position: absolute;
             bottom: 25px;
@@ -38,11 +46,11 @@
             align-items: center;
             z-index: 10;
             flex-wrap: wrap; 
-            max-width: 500px; /* Aumentado para suportar a nova quantidade */
+            max-width: 500px;
         }
 
         .seal-group img {
-            width: 38px; /* Reduzi levemente o tamanho individual para manter a harmonia do grupo */
+            width: 38px;
             height: auto;
             opacity: 0.6;
             filter: drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
@@ -78,10 +86,7 @@
             letter-spacing: 3px;
         }
 
-        .spacer-jp {
-            display: inline-block;
-            width: 115px;
-        }
+        .spacer-jp { display: inline-block; width: 115px; }
 
         .red-pulse {
             color: #400;
@@ -110,7 +115,7 @@
             text-align: center;
             border-top: 1px solid #1a1a1a;
             padding-top: 20px;
-            width: 280px; 
+            width: 320px; 
         }
 
         h1 {
@@ -123,16 +128,17 @@
             white-space: nowrap; 
         }
 
-        /* FONTE GÓTICA NO CONTADOR */
+        /* --- CONTADOR COM FONTE ROOMACH --- */
         #countdown {
             display: flex;
             gap: 15px;
             justify-content: center;
-            font-size: 1.5rem;
-            color: #700;
-            font-family: 'UnifrakturMaguntia', serif;
-            font-weight: 400;
-            text-shadow: 0 0 5px rgba(119, 0, 0, 0.3);
+            font-size: 2.2rem; /* Aumentado para valorizar a Roomach */
+            color: #800;
+            font-family: 'Roomach', serif; /* Aplicação da fonte */
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(150, 0, 0, 0.5);
         }
 
         .time-block { display: flex; flex-direction: column; align-items: center; }
@@ -143,7 +149,7 @@
             color: #333; 
             text-transform: uppercase; 
             letter-spacing: 1px; 
-            margin-top: 4px; 
+            margin-top: -2px; /* Ajuste para proximidade com a Roomach */
         }
 
         .pulse-dot {
@@ -155,7 +161,7 @@
             animation: slow-breath 8s infinite ease-in-out;
         }
 
-        /* --- CRÉDITOS RODAPÉ --- */
+        /* --- RODAPÉ --- */
         .footer-credits {
             position: absolute;
             bottom: 25px;
@@ -167,53 +173,20 @@
             white-space: nowrap;
         }
 
-        /* --- EFEITOS GLITCH --- */
-        .glitch {
-            position: relative;
-            display: inline-block;
-            color: #800;
-            animation: glitch-flash 2.5s infinite steps(1); 
-        }
-
-        .glitch-move {
-            position: relative;
-            display: inline-block;
-            color: #800;
-            animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out;
-        }
-
-        /* --- KEYFRAMES --- */
+        /* --- ANIMAÇÕES --- */
         @keyframes pulse-red-text {
             0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
             50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
         }
-
-        @keyframes wormhole-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
+        @keyframes wormhole-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes slow-breath {
             0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
             50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 0.8; }
         }
 
-        @keyframes depth-move {
-            0%, 100% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        @keyframes glitch-flash {
-            0%, 92%, 94%, 97%, 100% { color: #800; text-shadow: none; }
-            93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
-        }
-
         @media (max-width: 550px) {
-            .wormhole-container { width: 95vw; }
-            .content { width: 240px; }
-            #countdown { font-size: 1.2rem; gap: 10px; }
-            .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
-            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 8px; justify-content: center; width: 90%; }
+            #countdown { font-size: 1.8rem; }
+            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 8px; justify-content: center; width: 95%; }
         }
     </style>
 </head>
@@ -242,10 +215,6 @@
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
             </div>
         </div>
     </div>
@@ -260,42 +229,25 @@
             <div class="time-block"><span id="days">--</span><span class="label">Days</span></div>
             <div class="time-block"><span id="hours">--</span><span class="label">Hrs</span></div>
             <div class="time-block"><span id="minutes">--</span><span class="label">Min</span></div>
-            <div class="time-block">
-                <span id="seconds" class="glitch" data-text="--">--</span>
-                <span class="label">Sec</span>
-            </div>
+            <div class="time-block"><span id="seconds">--</span><span class="label">Sec</span></div>
         </div>
         <div class="pulse-dot"></div>
     </div>
 
     <div class="footer-credits">
-        Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
+        Design by <span class="footer-name">KOOPER</span> 2026 &reg;
     </div>
 
     <script>
         function disableInspector(e) {
-            if (e.keyCode == 123 || 
-                (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || 
-                (e.ctrlKey && e.keyCode == 85)) {
-                return false;
-            }
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
         }
-
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.nodeName === 'IMG') e.preventDefault();
-        });
+        document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
 
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
-
         function updateTimer() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance < 0) {
-                document.getElementById("countdown").innerHTML = "ESTABLISHED";
-                return;
-            }
-
+            const distance = targetDate - new Date().getTime();
+            if (distance < 0) { document.getElementById("countdown").innerHTML = "ESTABLISHED"; return; }
             const d = Math.floor(distance / (1000 * 60 * 60 * 24));
             const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -304,14 +256,9 @@
             document.getElementById("days").innerText = d.toString().padStart(2, '0');
             document.getElementById("hours").innerText = h.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
-            
-            const secondsEl = document.getElementById("seconds");
-            secondsEl.innerText = s.toString().padStart(2, '0');
-            secondsEl.setAttribute('data-text', s.toString().padStart(2, '0'));
+            document.getElementById("seconds").innerText = s.toString().padStart(2, '0');
         }
-
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        setInterval(updateTimer, 1000); updateTimer();
     </script>
 </body>
 </html>
