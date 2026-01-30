@@ -7,10 +7,10 @@
     <style>
         /* TRAVA DE SELEÇÃO GLOBAL */
         * {
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Padrão */
-            -webkit-touch-callout: none; /* Impede menu de contexto no mobile */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
         }
 
         body {
@@ -25,6 +25,28 @@
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             position: relative;
+        }
+
+        /* --- GRUPO DE SELOS COM BLUR VERMELHO --- */
+        .seal-group {
+            position: absolute;
+            bottom: 25px;
+            left: 5%;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 10;
+            flex-wrap: wrap; /* Permite quebra de linha se houver muitos selos em telas pequenas */
+            max-width: 450px;
+        }
+
+        .seal-group img {
+            width: 42px; /* Ajuste fino para acomodar os 6 selos */
+            height: auto;
+            opacity: 0.6;
+            /* Efeito de brilho vermelho estático conforme solicitado */
+            filter: drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
+            pointer-events: none;
         }
 
         /* --- LETREIRO TOPO --- */
@@ -81,17 +103,14 @@
             width: 80%; 
             height: auto;
             animation: slow-breath 8s infinite ease-in-out;
-            pointer-events: none; 
+            pointer-events: none;
         }
 
         .content {
             text-align: center;
             border-top: 1px solid #1a1a1a;
             padding-top: 20px;
-            width: 280px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            width: 280px; 
         }
 
         h1 {
@@ -125,47 +144,16 @@
             animation: slow-breath 8s infinite ease-in-out;
         }
 
-        /* --- SELOS (CANTO INFERIOR ESQUERDO) --- */
-        .seals-wrapper {
-            position: absolute; /* Posicionamento absoluto */
-            bottom: 30px;       /* Distância do fundo */
-            left: 30px;         /* Distância da esquerda */
-            display: flex;
-            gap: 15px;
-            z-index: 5;
-        }
-
-        .seals-wrapper img {
-            width: 32px;
-            height: auto;
-            opacity: 0.2; /* Um pouco mais discreto no canto */
-            transition: all 0.4s ease;
-            filter: drop-shadow(0 0 0 transparent);
-            animation: slow-breath 7s infinite ease-in-out; 
-            cursor: help; /* Muda o cursor para indicar que algo acontece */
-        }
-
-        /* Descompasso da animação */
-        .seals-wrapper img:nth-child(odd) { animation-delay: 1s; }
-        .seals-wrapper img:nth-child(even) { animation-delay: 2.5s; }
-
-        .seals-wrapper img:hover {
-            opacity: 1;
-            filter: drop-shadow(0 0 10px #f00); /* Brilho vermelho mais intenso */
-            transform: scale(1.1) rotate(5deg); /* Leve rotação ao passar o mouse */
-        }
-
-        /* --- CRÉDITOS RODAPÉ (CANTO INFERIOR DIREITO) --- */
+        /* --- CRÉDITOS RODAPÉ --- */
         .footer-credits {
             position: absolute;
-            bottom: 30px; /* Alinhado na mesma altura dos selos */
-            right: 30px;
+            bottom: 25px;
+            right: 5%;
             font-size: 0.65rem;
             color: #2a2a2a;
             letter-spacing: 2px;
             text-transform: uppercase;
             white-space: nowrap;
-            text-align: right;
         }
 
         /* --- EFEITOS GLITCH --- */
@@ -183,25 +171,6 @@
             animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out;
         }
 
-        .glitch-move::before, .glitch-move::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #050505; overflow: hidden;
-        }
-
-        .glitch-move::before {
-            left: 2px; text-shadow: -1px 0 #fff; 
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
-        }
-
-        .glitch-move::after {
-            left: -2px; text-shadow: -1px 0 #fff;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim-2 2s infinite linear alternate-reverse;
-        }
-
         /* --- KEYFRAMES --- */
         @keyframes pulse-red-text {
             0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
@@ -214,8 +183,8 @@
         }
 
         @keyframes slow-breath {
-            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.2; }
-            50% { filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.4)); opacity: 0.7; }
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 0.8; }
         }
 
         @keyframes depth-move {
@@ -228,19 +197,25 @@
             93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 550px) {
             .wormhole-container { width: 95vw; }
             .content { width: 240px; }
             #countdown { font-size: 0.9rem; gap: 8px; }
-            
-            /* Ajustes Mobile para os cantos */
-            .footer-credits { right: 15px; bottom: 15px; }
-            .seals-wrapper { left: 15px; bottom: 15px; gap: 10px; }
-            .seals-wrapper img { width: 26px; }
+            .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
+            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 10px; justify-content: center; }
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
+
+    <div class="seal-group">
+        <img src="seal_01.png" alt="S01" ondragstart="return false">
+        <img src="seal_02.png" alt="S02" ondragstart="return false">
+        <img src="seal_03.png" alt="S03" ondragstart="return false">
+        <img src="seal_15.png" alt="S15" ondragstart="return false">
+        <img src="seal_16.png" alt="S16" ondragstart="return false">
+        <img src="seal_17.png" alt="S17" ondragstart="return false">
+    </div>
 
     <div class="header-wormhole">
         <div class="wormhole-container">
@@ -277,21 +252,11 @@
         <div class="pulse-dot"></div>
     </div>
 
-    <div class="seals-wrapper">
-        <img src="seal_01.png" alt="Seal I" ondragstart="return false">
-        <img src="seal_02.png" alt="Seal II" ondragstart="return false">
-        <img src="seal_03.png" alt="Seal III" ondragstart="return false">
-        <img src="seal_15.png" alt="Seal XV" ondragstart="return false">
-        <img src="seal_16.png" alt="Seal XVI" ondragstart="return false">
-        <img src="seal_17.png" alt="Seal XVII" ondragstart="return false">
-    </div>
-
     <div class="footer-credits">
         Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
     </div>
 
     <script>
-        // --- BLOQUEIO DE SEGURANÇA ---
         function disableInspector(e) {
             if (e.keyCode == 123 || 
                 (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || 
@@ -304,7 +269,6 @@
             if (e.target.nodeName === 'IMG') e.preventDefault();
         });
 
-        // --- LÓGICA DO CRONÔMETRO ---
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
 
         function updateTimer() {
@@ -321,14 +285,13 @@
             const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((distance % (1000 * 60)) / 1000);
 
-            const sFormatted = s.toString().padStart(2, '0');
             document.getElementById("days").innerText = d.toString().padStart(2, '0');
             document.getElementById("hours").innerText = h.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
             
             const secondsEl = document.getElementById("seconds");
-            secondsEl.innerText = sFormatted;
-            secondsEl.setAttribute('data-text', sFormatted);
+            secondsEl.innerText = s.toString().padStart(2, '0');
+            secondsEl.setAttribute('data-text', s.toString().padStart(2, '0'));
         }
 
         setInterval(updateTimer, 1000);
