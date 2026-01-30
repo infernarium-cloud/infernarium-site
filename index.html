@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM | Samhain 2026</title>
     <style>
-        /* IMPORTAÇÃO DA FONTE ROOMACH (Certifique-se que o arquivo está na pasta) */
-        @font-face {
-            font-family: 'Roomach';
-            src: url('Roomach.woff2') format('woff2'),
-                 url('Roomach.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
         /* TRAVA DE SELEÇÃO GLOBAL */
         * {
             -webkit-user-select: none;
@@ -36,24 +27,23 @@
             position: relative;
         }
 
-        /* --- GRUPO DE SELOS --- */
-        .seal-group {
+        /* --- SIDEBAR DE SELOS (VERTICAL +1px) --- */
+        .seal-sidebar {
             position: absolute;
-            bottom: 25px;
-            left: 5%;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
-            gap: 12px;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
             z-index: 10;
-            flex-wrap: wrap; 
-            max-width: 500px;
         }
 
-        .seal-group img {
-            width: 38px;
+        .seal-sidebar img {
+            width: 46px; 
             height: auto;
             opacity: 0.6;
-            filter: drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
+            filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
             pointer-events: none;
         }
 
@@ -115,7 +105,7 @@
             text-align: center;
             border-top: 1px solid #1a1a1a;
             padding-top: 20px;
-            width: 320px; 
+            width: 280px; 
         }
 
         h1 {
@@ -128,28 +118,33 @@
             white-space: nowrap; 
         }
 
-        /* --- CONTADOR COM FONTE ROOMACH --- */
+        /* --- CONTADOR COURIER COM GLITCH --- */
         #countdown {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
-            font-size: 2.2rem; /* Aumentado para valorizar a Roomach */
-            color: #800;
-            font-family: 'Roomach', serif; /* Aplicação da fonte */
-            font-weight: normal;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(150, 0, 0, 0.5);
+            font-size: 1.1rem; 
+            color: #700;
+            font-weight: bold;
         }
 
         .time-block { display: flex; flex-direction: column; align-items: center; }
-        
-        .label { 
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.45rem; 
-            color: #333; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            margin-top: -2px; /* Ajuste para proximidade com a Roomach */
+        .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+
+        /* --- EFEITOS GLITCH (RESTAURADOS) --- */
+        .glitch {
+            position: relative;
+            display: inline-block;
+            color: #800;
+            animation: glitch-flash 2.5s infinite steps(1); 
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505; overflow: hidden;
+            visibility: hidden;
         }
 
         .pulse-dot {
@@ -173,7 +168,7 @@
             white-space: nowrap;
         }
 
-        /* --- ANIMAÇÕES --- */
+        /* --- KEYFRAMES --- */
         @keyframes pulse-red-text {
             0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
             50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
@@ -183,16 +178,30 @@
             0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
             50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 0.8; }
         }
+        @keyframes glitch-flash {
+            0%, 92%, 94%, 97%, 100% { color: #800; text-shadow: none; }
+            93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
+        }
 
-        @media (max-width: 550px) {
-            #countdown { font-size: 1.8rem; }
-            .seal-group { left: 50%; bottom: 65px; transform: translateX(-50%); gap: 8px; justify-content: center; width: 95%; }
+        @media (max-width: 650px) {
+            .seal-sidebar { 
+                flex-direction: row; 
+                top: auto; 
+                bottom: 70px; 
+                left: 50%; 
+                transform: translateX(-50%); 
+                width: 95%; 
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .seal-sidebar img { width: 32px; }
+            .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
-    <div class="seal-group">
+    <div class="seal-sidebar">
         <img src="seal_01.png" alt="S01">
         <img src="seal_02.png" alt="S02">
         <img src="seal_03.png" alt="S03">
@@ -215,6 +224,8 @@
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
             </div>
         </div>
     </div>
@@ -229,7 +240,10 @@
             <div class="time-block"><span id="days">--</span><span class="label">Days</span></div>
             <div class="time-block"><span id="hours">--</span><span class="label">Hrs</span></div>
             <div class="time-block"><span id="minutes">--</span><span class="label">Min</span></div>
-            <div class="time-block"><span id="seconds">--</span><span class="label">Sec</span></div>
+            <div class="time-block">
+                <span id="seconds" class="glitch" data-text="--">--</span>
+                <span class="label">Sec</span>
+            </div>
         </div>
         <div class="pulse-dot"></div>
     </div>
@@ -245,20 +259,34 @@
         document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
 
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
+
         function updateTimer() {
-            const distance = targetDate - new Date().getTime();
-            if (distance < 0) { document.getElementById("countdown").innerHTML = "ESTABLISHED"; return; }
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "ESTABLISHED";
+                return;
+            }
+
             const d = Math.floor(distance / (1000 * 60 * 60 * 24));
             const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((distance % (1000 * 60)) / 1000);
 
+            const sStr = s.toString().padStart(2, '0');
+
             document.getElementById("days").innerText = d.toString().padStart(2, '0');
             document.getElementById("hours").innerText = h.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = s.toString().padStart(2, '0');
+            
+            const secondsEl = document.getElementById("seconds");
+            secondsEl.innerText = sStr;
+            secondsEl.setAttribute('data-text', sStr); // Atualiza o data-text para o glitch
         }
-        setInterval(updateTimer, 1000); updateTimer();
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
     </script>
 </body>
 </html>
