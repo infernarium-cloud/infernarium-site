@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM - Coming Soon</title>
     <style>
-        /* Reset para garantir consistência em todos os navegadores */
         * {
             margin: 0;
             padding: 0;
@@ -15,135 +14,130 @@
         body {
             background-color: #050505;
             color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace; /* Fonte monoespaçada estilo terminal */
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh; /* Garante altura total sem cortar conteúdo */
-            padding: 20px;
+            min-height: 100vh;
             text-align: center;
-            cursor: pointer; /* Cursor de clique em toda a tela */
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        /* Container da Logo */
+        /* Container da Logo com tratamento para erro de carregamento */
         .logo-container {
-            margin-bottom: 40px;
-            animation: breathe 4s ease-in-out infinite;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 30px;
+            animation: breathe 5s ease-in-out infinite;
         }
 
         .logo-container img {
             width: 100%;
-            max-width: 280px; /* Tamanho controlado para não estourar a tela */
             height: auto;
-            filter: grayscale(100%) contrast(120%);
+            filter: grayscale(100%) contrast(110%);
+            display: block;
         }
 
-        /* Animação de respiração da logo */
         @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.02); opacity: 1; }
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.04); opacity: 1; }
         }
 
-        /* Estilo do Contador */
         #countdown {
-            font-size: 1.5rem; /* Tamanho responsivo */
-            letter-spacing: 4px;
-            color: #888;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            letter-spacing: 6px;
+            color: #666;
+            margin-bottom: 25px;
         }
 
-        /* Ponto vermelho pulsante */
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
+        /* Indicador de status do áudio */
+        #status {
+            font-size: 0.6rem;
+            color: #222;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.5s;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
             background-color: #ff0000;
             border-radius: 50%;
-            box-shadow: 0 0 10px #ff0000;
+            margin: 20px auto;
+            box-shadow: 0 0 12px #ff0000;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(2); opacity: 0.3; }
+            50% { transform: scale(2.5); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Esconde o player de áudio visualmente */
-        audio {
-            display: none;
-        }
-        
-        /* Aviso discreto de som */
-        .sound-hint {
-            margin-top: 50px;
-            font-size: 0.7rem;
-            color: #333;
-            opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
     <div class="logo-container">
-        <img src="logo_inf.png" alt="INFERNARIUM">
+        <img src="logo_inf.png" alt="INFERNARIUM" id="mainLogo">
     </div>
 
-    <div id="countdown">CARREGANDO SISTEMA...</div>
+    <div id="countdown">CARREGANDO...</div>
     
-    <div class="pulse-dot"></div>
-    
-    <div class="sound-hint">[ clique na tela para ativar o áudio ]</div>
+    <div class="dot"></div>
 
-    <audio id="bgAudio" loop preload="auto">
-        <source src="notfound.ogg" type="audio/ogg">
-        <source src="notfound.mp3" type="audio/mpeg">
-    </audio>
+    <div id="status">SISTEMA OFFLINE - CLIQUE PARA INICIAR</div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Data de lançamento: 31 de Outubro de 2026
-            const launchDate = new Date("Oct 31, 2026 00:00:00").getTime();
+        // 1. Gerenciamento do Áudio via JS (Forma mais estável)
+        const audio = new Audio();
+        audio.src = 'notfound.ogg'; // Seu arquivo convertido
+        audio.loop = true;
+        audio.preload = 'auto';
 
-            // Atualiza o contador a cada 1 segundo
-            const timer = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = launchDate - now;
+        let audioReady = false;
 
-                if (distance < 0) {
-                    clearInterval(timer);
-                    document.getElementById("countdown").innerText = "SISTEMA ONLINE";
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById("countdown").innerText = 
-                    `${days}D ${hours}H ${minutes}M ${seconds}S`;
-            }, 1000);
-
-            // Controle de Áudio ao Clicar
-            const audio = document.getElementById("bgAudio");
-            
-            const playAudio = () => {
-                audio.play().then(() => {
-                    console.log("Áudio iniciado com sucesso.");
-                    // Remove o listener após o primeiro play para não reiniciar
-                    document.body.removeEventListener('click', playAudio);
-                    // Esconde a dica de som
-                    document.querySelector('.sound-hint').style.display = 'none';
-                }).catch(err => {
-                    console.error("Erro ao tentar tocar o áudio:", err);
-                });
-            };
-
-            document.body.addEventListener('click', playAudio);
+        audio.addEventListener('canplaythrough', () => {
+            audioReady = true;
+            console.log("Áudio carregado e pronto.");
         });
+
+        // Interação do usuário para dar Play (Exigência do Navegador)
+        document.body.addEventListener('click', () => {
+            audio.play().then(() => {
+                document.getElementById('status').innerText = "SISTEMA ONLINE";
+                document.getElementById('status').style.color = "#444";
+            }).catch(err => console.log("Aguardando interação..."));
+        }, { once: true });
+
+        // 2. Countdown: 31 de Outubro de 2026
+        const launchDate = new Date("Oct 31, 2026 00:00:00").getTime();
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerText = "OPEN NOW";
+                return;
+            }
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerText = `${d}D ${h}H ${m}M ${s}S`;
+        }, 1000);
+
+        // Fallback para imagem da logo
+        document.getElementById('mainLogo').onerror = function() {
+            console.error("Erro ao carregar a logo. Verifique o nome do arquivo.");
+            this.style.border = "1px solid #333";
+            this.style.padding = "10px";
+        };
     </script>
 </body>
 </html>
