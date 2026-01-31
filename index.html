@@ -25,7 +25,7 @@
         }
         .seal-sidebar img { width: 46px; height: auto; opacity: 0.6; filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8)); pointer-events: none; }
 
-        /* --- LETREIRO JAPONÊS (HARMONIZADO) --- */
+        /* --- LETREIRO JAPONÊS (FONTE +1PX) --- */
         .header-wormhole {
             position: absolute; top: 35px; left: 0; width: 100%; height: 25px;
             display: flex; justify-content: center; z-index: 10;
@@ -37,8 +37,9 @@
         }
         .scrolling-text {
             display: inline-block; white-space: nowrap;
-            animation: wormhole-scroll 40s linear infinite; /* Mais lento e suave */
-            font-size: 0.65rem; color: #1a1a1a; letter-spacing: 5px;
+            animation: wormhole-scroll 40s linear infinite;
+            font-size: 0.72rem; /* Aumentado em 1px aprox. */
+            color: #1a1a1a; letter-spacing: 6px;
             transition: color 0.5s ease;
         }
         .spacer-jp { display: inline-block; width: 100px; }
@@ -160,31 +161,18 @@
         function disableInspector(e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; }
         document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
 
-        // SISTEMA DE SORTEIO DUPLO (6 SEGUNDOS)
         setInterval(() => {
             const items = document.querySelectorAll('.jp-item');
-            
-            // Limpa estados anteriores
-            items.forEach(el => {
-                el.classList.remove('red-pulse', 'glitch-active');
-            });
+            items.forEach(el => el.classList.remove('red-pulse', 'glitch-active'));
 
-            // Sorteia o novo elemento de Pulso
             const pulseIndex = Math.floor(Math.random() * items.length);
             items[pulseIndex].classList.add('red-pulse');
 
-            // Sorteia o elemento de Glitch (garantindo que não seja o mesmo do pulso)
             let glitchIndex;
-            do {
-                glitchIndex = Math.floor(Math.random() * items.length);
-            } while (glitchIndex === pulseIndex);
+            do { glitchIndex = Math.floor(Math.random() * items.length); } while (glitchIndex === pulseIndex);
 
             items[glitchIndex].classList.add('glitch-active');
-
-            // Remove o glitch um pouco antes do próximo ciclo para impacto visual
-            setTimeout(() => { 
-                items[glitchIndex].classList.remove('glitch-active'); 
-            }, 1500);
+            setTimeout(() => { items[glitchIndex].classList.remove('glitch-active'); }, 1500);
         }, 6000);
 
         document.getElementById('awakeningForm').addEventListener('submit', async (e) => {
