@@ -277,5 +277,53 @@
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
+
+    <script>
+        (function() {
+            // 1. Configurações
+            const audioConfig = {
+                file: 'notfound.ogg',
+                volume: 0.4, // Volume ambiente (0.0 a 1.0)
+                loop: true
+            };
+
+            // 2. Criar elemento de áudio invisível (Inject)
+            const bgAudio = document.createElement('audio');
+            bgAudio.src = audioConfig.file;
+            bgAudio.loop = audioConfig.loop;
+            bgAudio.preload = 'auto';
+            bgAudio.volume = audioConfig.volume;
+            // Ocultar visualmente, mas manter no DOM
+            bgAudio.style.display = 'none'; 
+            document.body.appendChild(bgAudio);
+
+            // 3. Função de tentativa de reprodução
+            function tryPlayAudio() {
+                const playPromise = bgAudio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.warn("INFERNARIUM: Autoplay blocked. Waiting for user interaction.");
+                        // Adiciona listener para desbloquear no primeiro clique
+                        document.addEventListener('click', unlockAudio, { once: true });
+                        document.addEventListener('keydown', unlockAudio, { once: true });
+                        document.addEventListener('touchstart', unlockAudio, { once: true });
+                    });
+                }
+            }
+
+            // 4. Função de desbloqueio (Executa apenas uma vez)
+            function unlockAudio() {
+                bgAudio.play();
+                // Remove os listeners para não tentar disparar novamente
+                document.removeEventListener('click', unlockAudio);
+                document.removeEventListener('keydown', unlockAudio);
+                document.removeEventListener('touchstart', unlockAudio);
+            }
+
+            // Iniciar tentativa
+            tryPlayAudio();
+        })();
+    </script>
 </body>
 </html>
