@@ -30,29 +30,36 @@
         }
         .seal-left { left: 20px; }
         .seal-right { right: 20px; }
-        .seal-sidebar img { 
-            width: 46px; height: auto; 
-            opacity: 0.6; 
-            filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8)); 
-            pointer-events: none; 
-        }
+        .seal-sidebar img { width: 46px; height: auto; opacity: 0.6; filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8)); pointer-events: none; }
 
-        /* --- LETREIRO JAPONÊS --- */
+        /* --- LETREIRO JAPONÊS (CORRIGIDO) --- */
         .header-wormhole {
-            position: absolute; top: 20px; width: 100%;
-            display: flex; justify-content: center; z-index: 10;
+            position: absolute; 
+            top: 30px; 
+            left: 0;
+            width: 100%;
+            height: 20px;
+            display: flex; 
+            justify-content: center; 
+            z-index: 10;
         }
         .wormhole-container {
-            width: 90vw; max-width: 1000px; overflow: hidden; white-space: nowrap; position: relative;
+            width: 100%; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            position: relative;
             -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
             mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
         }
         .scrolling-text {
-            display: inline-block; white-space: nowrap;
-            animation: wormhole-scroll 20s linear infinite;
-            font-size: 0.65rem; color: #2a2a2a; letter-spacing: 3px;
+            display: inline-block; 
+            white-space: nowrap;
+            animation: wormhole-scroll 25s linear infinite;
+            font-size: 0.65rem; 
+            color: #2a2a2a; 
+            letter-spacing: 4px;
         }
-        .spacer-jp { display: inline-block; width: 115px; }
+        .spacer-jp { display: inline-block; width: 120px; }
         .red-pulse { color: #400; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
 
         /* --- CONTEÚDO CENTRAL --- */
@@ -98,7 +105,10 @@
 
         /* --- ANIMAÇÕES --- */
         @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
-        @keyframes wormhole-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes wormhole-scroll { 
+            from { transform: translateX(0); } 
+            to { transform: translateX(-50%); } 
+        }
         @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
         @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; } }
@@ -123,6 +133,13 @@
     <div class="header-wormhole">
         <div class="wormhole-container">
             <div class="scrolling-text">
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
+                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
