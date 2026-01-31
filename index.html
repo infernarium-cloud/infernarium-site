@@ -20,7 +20,7 @@
 
         /* --- TERMINAL ÚNICO (ESQUERDA) --- */
         .terminal-sidebar {
-            position: absolute; top: 0; left: 0; width: 25%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 28%; height: 100%;
             padding: 30px; box-sizing: border-box;
             font-size: 10px; color: #444;
             overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
@@ -29,10 +29,11 @@
             pointer-events: auto;
             z-index: 5;
         }
-        .terminal-sidebar:hover { opacity: 0.8; color: #888; }
-        .terminal-line { margin-bottom: 4px; word-break: break-all; }
-        .term-user { color: #600; font-weight: bold; transition: color 0.5s; }
-        .terminal-sidebar:hover .term-user { color: #900; }
+        .terminal-sidebar:hover { opacity: 0.9; color: #999; }
+        .terminal-line { margin-bottom: 4px; word-break: break-all; font-family: 'Courier New', monospace; }
+        .term-user { color: #800; font-weight: bold; transition: color 0.5s; } /* Vermelho mais intenso */
+        .term-cmd { color: #ccc; } /* Cor do comando claro */
+        .terminal-sidebar:hover .term-user { color: #f00; text-shadow: 0 0 5px #500; }
 
         /* --- LETREIRO JAPONÊS --- */
         .header-wormhole {
@@ -64,7 +65,8 @@
         .time-block { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
         .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
         
-        .glitch { position: relative; display: inline-block; animation: glitch-flash 0.3s steps(1); }
+        /* Glitch do contador */
+        .glitch-flash { position: relative; display: inline-block; animation: flash-white 0.2s steps(1); }
 
         /* --- NEWSLETTER --- */
         .newsletter-section { margin-top: 40px; opacity: 0.15; transition: opacity 0.6s ease-in-out; }
@@ -82,21 +84,34 @@
         }
         .enter-btn:hover { border-color: #600; color: #800; background: rgba(128, 0, 0, 0.05); }
 
+        /* --- RODAPÉ --- */
         .footer-credits { position: absolute; bottom: 25px; right: 5%; font-size: 0.65rem; color: #2a2a2a; letter-spacing: 2px; text-transform: uppercase; z-index: 20; }
-        .glitch-move { position: relative; display: inline-block; color: #800; animation: depth-move 4s infinite ease-in-out; }
+        .glitch-move { 
+            position: relative; display: inline-block; color: #800; 
+            animation: glitch-text-anim 3s infinite linear alternate-reverse; 
+        }
+
+        /* --- CLASSES DE EFEITO (JavaScript) --- */
+        .red-pulse { color: #600 !important; text-shadow: 0 0 5px #300; font-weight: bold; transition: color 0.2s; }
+        .glitch-active { color: #fff !important; text-shadow: 0 0 8px #fff, 2px 0 #f00, -2px 0 #00f !important; }
 
         /* --- ANIMAÇÕES --- */
         @keyframes wormhole-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
-        @keyframes glitch-flash { 
+        @keyframes flash-white { 
             0%, 100% { color: #700; text-shadow: none; } 
-            50% { color: #fff; text-shadow: 0 0 8px #fff; transform: translate(2px, -1px); } 
-            75% { color: #fff; transform: translate(-2px, 1px); }
+            50% { color: #fff; text-shadow: 0 0 10px #fff; transform: scale(1.1); } 
         }
-        @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
+        @keyframes glitch-text-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
 
-        @media (max-width: 850px) { .terminal-sidebar { width: 100%; height: 20%; bottom: 0; top: auto; } }
+        @media (max-width: 850px) { .terminal-sidebar { width: 100%; height: 25%; bottom: 0; top: auto; background: rgba(0,0,0,0.8); } }
     </style>
 </head>
 <body oncontextmenu="return false">
@@ -149,49 +164,99 @@
     </div>
 
     <script>
-        // LOGS DO TERMINAL (EXPANDIDOS COM A NARRATIVA DO PACTO)
-        const logs = [
-            // Originais
-            "sudo apt-get update...", "User @infernarium logged in.", "Bypassing firewall...", 
-            "Root access GRANTED", "Scanning nodes...", "Syncing Samhain_2026...",
-            // Novos (Pacto e Ritual)
-            "Starting SAMHAIN_RITUAL...", "Awaiting blood_offering.vbs", "Scanning visitor_soul...",
-            "Tracing digital_fingerprint...", "Vessel detected. Initializing link...",
-            "Injecting void_code into buffer...", "Consuming blood_metadata...",
-            "Contract draft: PACT_ID_0666 generated.", "Sign with your trail...",
-            "Invitation sent to the Abyss.", "Establishing soul_bridge...",
-            "Shadow_Hand handshake successful.", "Offering accepted. No turning back.",
-            "Summoning gate_keepers...", "Infernal_Protocol: EXECUTING",
-            "Are you watching? Because we are.", "Binding user_identity to Samhain...",
-            "Ethereal connection STABLE.", "Sacrifice detected in sector 7."
-        ];
+        // --- 1. CAPTURA DE IP REAL ---
+        let visitorIP = "127.0.0.1"; // Valor padrão
+        let ipFound = false;
+
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                visitorIP = data.ip;
+                ipFound = true;
+            })
+            .catch(error => console.log('Network invisible.'));
+
+        // --- 2. TERMINAL LINUX + RITUAL ---
+        const term = document.getElementById('termLeft');
+        
+        function getCommand() {
+            // Comandos mistos: Linux real + Lore do pacto
+            const commands = [
+                // Linux Networking / System
+                `sudo nmap -sS -O ${visitorIP}`,
+                `ping -c 3 ${visitorIP} | grep 'ttl='`,
+                `traceroute -m 30 gate.infernarium.net`,
+                "sudo systemctl start demonic_daemon.service",
+                "chmod 777 /var/www/html/soul_contract.sh",
+                `grep -r "ACCEPT_DEATH" /home/visitor/${visitorIP}.log`,
+                "whoami > root",
+                "free -h | grep 'SOUL_MEMORY'",
+                
+                // Narrative / Ritual
+                "Initializing blood_handshake...",
+                `Target identified: [${visitorIP}]`,
+                "Injecting payload: void_script.vbs",
+                "Requesting permission from The_Abyss...",
+                "Downloading 'Book_of_Names.db'...",
+                "Error 666: Mortality breach detected.",
+                "Compiling dark_matter assets...",
+                "Establish connection: PORT 666 [OPEN]",
+                "Executing ritual sequence...",
+                "Saving user preference: ETERNAL_BINDING"
+            ];
+            return commands[Math.floor(Math.random() * commands.length)];
+        }
 
         function updateTerminal() {
-            const term = document.getElementById('termLeft');
             const line = document.createElement('div');
             line.className = 'terminal-line';
-            line.innerHTML = `<span class="term-user">@infernarium:~$</span> ${logs[Math.floor(Math.random() * logs.length)]}`;
+            
+            // Estrutura: Usuario Vermelho + Comando
+            const cmdText = getCommand();
+            line.innerHTML = `<span class="term-user">@infernarium:~$</span> <span class="term-cmd">${cmdText}</span>`;
+            
             term.appendChild(line);
-            if (term.childNodes.length > 30) term.removeChild(term.firstChild);
-        }
-        setInterval(updateTerminal, 1400); // Ligeiramente mais rápido para dar dinamismo
+            
+            // Scroll automático para o final
+            term.scrollTop = term.scrollHeight;
 
-        // JP PULSE
+            if (term.childNodes.length > 25) term.removeChild(term.firstChild);
+        }
+        
+        // Intervalo aleatório para parecer digitação humana
+        setInterval(updateTerminal, 1800);
+
+
+        // --- 3. EFEITOS DO LETREIRO JAPONÊS (Corrigido) ---
         setInterval(() => {
             const items = document.querySelectorAll('.jp-item');
-            items.forEach(el => el.classList.remove('red-pulse'));
-            items[Math.floor(Math.random() * items.length)].classList.add('red-pulse');
-        }, 5000);
+            if(items.length === 0) return;
 
-        // COUNTDOWN LOGIC
+            // Limpa estados anteriores
+            items.forEach(el => el.classList.remove('red-pulse', 'glitch-active'));
+
+            // Seleciona um para pulso vermelho
+            const idx1 = Math.floor(Math.random() * items.length);
+            items[idx1].classList.add('red-pulse');
+
+            // Ocasionalmente, seleciona outro para glitch branco violento
+            if (Math.random() > 0.5) {
+                const idx2 = Math.floor(Math.random() * items.length);
+                items[idx2].classList.add('glitch-active');
+                setTimeout(() => items[idx2].classList.remove('glitch-active'), 300);
+            }
+        }, 3000);
+
+
+        // --- 4. CONTADOR (Lógica Intacta) ---
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
         let prevTime = { d: "", h: "", m: "", s: "" };
 
-        function triggerGlitch(elementId) {
+        function triggerCountdownGlitch(elementId) {
             const el = document.getElementById(elementId);
-            el.classList.remove('glitch');
-            void el.offsetWidth;
-            el.classList.add('glitch');
+            el.classList.remove('glitch-flash');
+            void el.offsetWidth; // Força o reflow para reiniciar animação
+            el.classList.add('glitch-flash');
         }
 
         function updateTimer() {
@@ -204,10 +269,10 @@
             const m = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0');
             const s = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
 
-            if (d !== prevTime.d) { document.getElementById("days").innerText = d; triggerGlitch("days"); prevTime.d = d; }
-            if (h !== prevTime.h) { document.getElementById("hours").innerText = h; triggerGlitch("hours"); prevTime.h = h; }
-            if (m !== prevTime.m) { document.getElementById("minutes").innerText = m; triggerGlitch("minutes"); prevTime.m = m; }
-            if (s !== prevTime.s) { document.getElementById("seconds").innerText = s; triggerGlitch("seconds"); prevTime.s = s; }
+            if (d !== prevTime.d) { document.getElementById("days").innerText = d; triggerCountdownGlitch("days"); prevTime.d = d; }
+            if (h !== prevTime.h) { document.getElementById("hours").innerText = h; triggerCountdownGlitch("hours"); prevTime.h = h; }
+            if (m !== prevTime.m) { document.getElementById("minutes").innerText = m; triggerCountdownGlitch("minutes"); prevTime.m = m; }
+            if (s !== prevTime.s) { document.getElementById("seconds").innerText = s; triggerCountdownGlitch("seconds"); prevTime.s = s; }
         }
         setInterval(updateTimer, 1000);
         updateTimer();
