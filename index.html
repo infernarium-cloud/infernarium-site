@@ -61,6 +61,9 @@
         }
         .spacer-jp { display: inline-block; width: 120px; }
         .red-pulse { color: #400; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
+        
+        /* EFEITO GLITCH PARA O LETREIRO */
+        .glitch-active { animation: glitch-flash 0.4s infinite steps(1); color: #fff !important; text-shadow: 0 0 8px #fff; }
 
         /* --- CONTEÚDO CENTRAL --- */
         .logo-container { min-height: 200px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 20px; }
@@ -105,10 +108,7 @@
 
         /* --- ANIMAÇÕES --- */
         @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
-        @keyframes wormhole-scroll { 
-            from { transform: translateX(0); } 
-            to { transform: translateX(-50%); } 
-        }
+        @keyframes wormhole-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
         @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; } }
@@ -132,21 +132,21 @@
 
     <div class="header-wormhole">
         <div class="wormhole-container">
-            <div class="scrolling-text">
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
+            <div class="scrolling-text" id="wormholeText">
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
             </div>
         </div>
     </div>
@@ -183,6 +183,14 @@
     <script>
         function disableInspector(e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; }
         document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
+
+        // SISTEMA DE GLITCH RÍTMICO (3:33)
+        setInterval(() => {
+            const items = document.querySelectorAll('.jp-item');
+            const randomItem = items[Math.floor(Math.random() * items.length)];
+            randomItem.classList.add('glitch-active');
+            setTimeout(() => { randomItem.classList.remove('glitch-active'); }, 2000); // Glitch dura 2 segundos
+        }, 213000); // 3 minutos e 33 segundos
 
         document.getElementById('awakeningForm').addEventListener('submit', async (e) => {
             e.preventDefault();
