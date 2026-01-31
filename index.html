@@ -34,7 +34,7 @@
         .term-user { color: #600; font-weight: bold; transition: color 0.5s; }
         .terminal-sidebar:hover .term-user { color: #900; }
 
-        /* --- LETREIRO JAPONÊS (LOOP CORRIGIDO) --- */
+        /* --- LETREIRO JAPONÊS --- */
         .header-wormhole {
             position: absolute; top: 35px; left: 0; width: 100%; height: 30px;
             overflow: hidden; z-index: 10;
@@ -52,9 +52,6 @@
         }
         .jp-group { display: flex; align-items: center; }
         .spacer-jp { width: 80px; flex-shrink: 0; }
-        
-        /* EFEITOS DINÂMICOS */
-        .red-pulse { color: #500 !important; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
 
         /* --- CONTEÚDO CENTRAL --- */
         .logo-container { min-height: 200px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 20px; }
@@ -62,33 +59,23 @@
         .content { text-align: center; border-top: 1px solid #1a1a1a; padding-top: 20px; width: 320px; z-index: 20; position: relative; }
         h1 { font-weight: 300; letter-spacing: 2px; text-transform: uppercase; font-size: 11px; color: #444; margin-bottom: 20px; }
         
+        /* --- CONTADOR COM GLITCH --- */
         #countdown { display: flex; gap: 12px; justify-content: center; font-size: 1.1rem; color: #700; font-weight: bold; }
-        .time-block { display: flex; flex-direction: column; align-items: center; }
+        .time-block { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
         .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+        
+        .glitch { position: relative; display: inline-block; animation: glitch-flash 0.3s steps(1); }
 
-        /* --- NEWSLETTER SECT (AJUSTADO) --- */
+        /* --- NEWSLETTER --- */
         .newsletter-section { margin-top: 40px; opacity: 0.15; transition: opacity 0.6s ease-in-out; }
         .newsletter-section:hover { opacity: 0.7; }
-        
-        /* Fonte aumentada e alinhamento corrigido */
-        .newsletter-label { 
-            display: block; 
-            font-size: 10px; 
-            color: #555; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            margin-bottom: 15px; 
-            text-align: center;
-        }
-        
+        .newsletter-label { display: block; font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; text-align: center; }
         input#email { 
             background: transparent; border: none; border-bottom: 1px solid #222; 
             color: #444; font-family: 'Courier New', monospace; font-size: 10px; 
             width: 240px; text-align: center; outline: none; margin-bottom: 20px;
             transition: border-color 0.5s;
         }
-        input#email:focus { border-bottom: 1px solid #600; color: #888; }
-
         .enter-btn {
             display: block; margin: 0 auto; background: transparent; border: 1px solid #222; 
             color: #333; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px; 
@@ -97,15 +84,20 @@
         .enter-btn:hover { border-color: #600; color: #800; background: rgba(128, 0, 0, 0.05); }
 
         .footer-credits { position: absolute; bottom: 25px; right: 5%; font-size: 0.65rem; color: #2a2a2a; letter-spacing: 2px; text-transform: uppercase; z-index: 20; }
-        .glitch-move { position: relative; display: inline-block; color: #800; animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out; }
+        .glitch-move { position: relative; display: inline-block; color: #800; animation: depth-move 4s infinite ease-in-out; }
 
+        /* --- ANIMAÇÕES --- */
         @keyframes wormhole-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
         @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
-        @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; } }
+        @keyframes glitch-flash { 
+            0%, 100% { color: #700; text-shadow: none; } 
+            50% { color: #fff; text-shadow: 0 0 8px #fff; transform: translate(2px, -1px); } 
+            75% { color: #fff; transform: translate(-2px, 1px); }
+        }
+        @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
 
-        @media (max-width: 850px) { .terminal-sidebar { width: 100%; height: 20%; bottom: 0; top: auto; padding: 15px; } }
+        @media (max-width: 850px) { .terminal-sidebar { width: 100%; height: 20%; bottom: 0; top: auto; } }
     </style>
 </head>
 <body oncontextmenu="return false">
@@ -120,10 +112,8 @@
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                 </div>
                 <div class="jp-group">
-                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
@@ -140,10 +130,10 @@
     <div class="content">
         <h1>Opening on Halloween 2026</h1>
         <div id="countdown">
-            <div class="time-block"><span id="days">--</span><span class="label">Days</span></div>
-            <div class="time-block"><span id="hours">--</span><span class="label">Hrs</span></div>
-            <div class="time-block"><span id="minutes">--</span><span class="label">Min</span></div>
-            <div class="time-block"><span id="seconds">--</span><span class="label">Sec</span></div>
+            <div class="time-block"><span id="days">00</span><span class="label">Days</span></div>
+            <div class="time-block"><span id="hours">00</span><span class="label">Hrs</span></div>
+            <div class="time-block"><span id="minutes">00</span><span class="label">Min</span></div>
+            <div class="time-block"><span id="seconds">00</span><span class="label">Sec</span></div>
         </div>
 
         <section class="newsletter-section">
@@ -160,7 +150,8 @@
     </div>
 
     <script>
-        const logs = ["sudo apt-get update...", "User @infernarium logged in.", "Initializing Samhain_Protocol...", "Bypassing void firewall...", "Root access GRANTED", "Syncing Samhain_2026...", "Scanning nodes...", "Purging identity logs...", "Loading assets...", "Gate: OPEN"];
+        // TERMINAL
+        const logs = ["Initializing...", "User @infernarium logged in.", "Bypassing firewall...", "Root access GRANTED", "Scanning nodes...", "Syncing time..."];
         function updateTerminal() {
             const term = document.getElementById('termLeft');
             const line = document.createElement('div');
@@ -169,24 +160,42 @@
             term.appendChild(line);
             if (term.childNodes.length > 30) term.removeChild(term.firstChild);
         }
-        setInterval(updateTerminal, 1500);
+        setInterval(updateTerminal, 1800);
 
+        // JP PULSE
         setInterval(() => {
             const items = document.querySelectorAll('.jp-item');
             items.forEach(el => el.classList.remove('red-pulse'));
             items[Math.floor(Math.random() * items.length)].classList.add('red-pulse');
-        }, 4000);
+        }, 5000);
 
+        // COUNTDOWN LOGIC WITH DYNAMIC GLITCH
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
+        let prevTime = { d: "", h: "", m: "", s: "" };
+
+        function triggerGlitch(elementId) {
+            const el = document.getElementById(elementId);
+            el.classList.remove('glitch');
+            void el.offsetWidth; // Trigger reflow
+            el.classList.add('glitch');
+        }
+
         function updateTimer() {
             const now = new Date().getTime();
             const distance = targetDate - now;
             if (distance < 0) return;
-            document.getElementById("days").innerText = Math.floor(distance / 86400000).toString().padStart(2, '0');
-            document.getElementById("hours").innerText = Math.floor((distance % 86400000) / 3600000).toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
+
+            const d = Math.floor(distance / 86400000).toString().padStart(2, '0');
+            const h = Math.floor((distance % 86400000) / 3600000).toString().padStart(2, '0');
+            const m = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
+
+            if (d !== prevTime.d) { document.getElementById("days").innerText = d; triggerGlitch("days"); prevTime.d = d; }
+            if (h !== prevTime.h) { document.getElementById("hours").innerText = h; triggerGlitch("hours"); prevTime.h = h; }
+            if (m !== prevTime.m) { document.getElementById("minutes").innerText = m; triggerGlitch("minutes"); prevTime.m = m; }
+            if (s !== prevTime.s) { document.getElementById("seconds").innerText = s; triggerGlitch("seconds"); prevTime.s = s; }
         }
+
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
