@@ -15,8 +15,16 @@
             overflow: hidden; position: relative;
         }
 
-        /* --- SIDEBARS DE SELOS --- */
-        .seal-sidebar { position: absolute; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 10; }
+        /* --- SIDEBARS DE SELOS (OCULTOS TEMPORARIAMENTE) --- */
+        .seal-sidebar { 
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            display: none; /* Camada isolada e oculta */
+            flex-direction: column; 
+            gap: 8px; 
+            z-index: 10; 
+        }
         .seal-left { left: 20px; }
         .seal-right { right: 20px; }
         .seal-sidebar img { width: 46px; height: auto; opacity: 0.6; filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8)); pointer-events: none; }
