@@ -18,7 +18,7 @@
             overflow: hidden; position: relative;
         }
 
-        /* --- TERMINAL (ESQUERDA) --- */
+        /* --- TERMINAL ÚNICO (ESQUERDA) --- */
         .terminal-sidebar {
             position: absolute; top: 0; left: 0; width: 28%; height: 100%;
             padding: 30px; box-sizing: border-box;
@@ -31,26 +31,27 @@
         }
         .terminal-sidebar:hover { opacity: 0.9; color: #999; }
         .terminal-line { margin-bottom: 4px; word-break: break-all; font-family: 'Courier New', monospace; }
-        .term-user { color: #800; font-weight: bold; transition: color 0.5s; }
-        .term-cmd { color: #ccc; }
+        .term-user { color: #800; font-weight: bold; transition: color 0.5s; } /* Vermelho mais intenso */
+        .term-cmd { color: #ccc; } /* Cor do comando claro */
         .terminal-sidebar:hover .term-user { color: #f00; text-shadow: 0 0 5px #500; }
 
-        /* --- LYRICS RAIN (DIREITA) --- */
+        /* --- NOVA ÁREA: LYRICS RAIN (DIREITA) --- */
         .lyrics-sidebar {
             position: absolute; top: 0; right: 0; width: 28%; height: 100%;
-            overflow: hidden; pointer-events: none; /* Deixa cliques passarem */
+            overflow: hidden; pointer-events: none; /* Não bloqueia cliques */
             z-index: 4;
+            /* Máscara para suavizar entrada e saída */
             -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
             mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         }
-        .falling-text {
+        .falling-line {
             position: absolute;
-            color: #500; /* Vermelho escuro base */
+            color: #600; /* Vermelho escuro sangue */
             font-size: 10px;
-            white-space: nowrap;
-            opacity: 0;
-            top: -50px;
             font-weight: bold;
+            white-space: nowrap;
+            top: -50px; /* Começa fora da tela */
+            opacity: 0;
             text-shadow: 0 0 2px #200;
         }
 
@@ -129,16 +130,18 @@
             80% { transform: translate(2px, -2px); }
             100% { transform: translate(0); }
         }
-        @keyframes text-fall {
-            0% { transform: translateY(-50px); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
+        /* Nova animação para a chuva de letras */
+        @keyframes fall-text-anim {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
             100% { transform: translateY(110vh); opacity: 0; }
         }
 
         @media (max-width: 850px) { 
             .terminal-sidebar { width: 100%; height: 25%; bottom: 0; top: auto; background: rgba(0,0,0,0.8); } 
-            .lyrics-sidebar { display: none; /* Esconde chuva de letras no mobile para nao poluir */ }
+            /* No mobile, escondemos a chuva lateral ou ajustamos, aqui vou esconder para não poluir */
+            .lyrics-sidebar { display: none; }
         }
     </style>
 </head>
@@ -206,7 +209,7 @@
             })
             .catch(error => console.log('Network invisible.'));
 
-        // --- 2. TERMINAL LINUX + RITUAL ---
+        // --- 2. TERMINAL LINUX + RITUAL (ESQUERDA) ---
         const term = document.getElementById('termLeft');
         
         function getCommand() {
@@ -240,63 +243,36 @@
         function updateTerminal() {
             const line = document.createElement('div');
             line.className = 'terminal-line';
+            
+            // Estrutura: Usuario Vermelho + Comando
             const cmdText = getCommand();
             line.innerHTML = `<span class="term-user">@infernarium:~$</span> <span class="term-cmd">${cmdText}</span>`;
+            
             term.appendChild(line);
+            
+            // Scroll automático para o final
             term.scrollTop = term.scrollHeight;
+
             if (term.childNodes.length > 25) term.removeChild(term.firstChild);
         }
+        
+        // Intervalo aleatório para parecer digitação humana
         setInterval(updateTerminal, 1800);
 
-        // --- 3. SISTEMA DE CHUVA DE LETRAS (DIREITA) ---
-        const lyricsContainer = document.getElementById('lyricsRight');
-        const lyricsList = [
-            "Poc Vezem", "Ter Qui Mon Serai", "A Rizer Ai", "Que Ce Ne Pas", 
-            "Er As Terer", "Que Re Ze Tai", "A Rizer Ai", "Que Re Ze Tai", 
-            "A Rizer Ai", "Que Ce Ne Pas", "Poc Vezem", "Ai Que Ce Ne Pas", 
-            "Poc Vezem", "Ter Qui Mon Serai", "Poc Vezem"
-        ];
-        
-        let lyricIndex = 0;
 
-        function spawnLyric() {
-            const el = document.createElement('div');
-            el.className = 'falling-text';
-            el.innerText = lyricsList[lyricIndex];
-            
-            // Avança o indice (loop)
-            lyricIndex = (lyricIndex + 1) % lyricsList.length;
-
-            // Randomizações para efeito orgânico
-            const randomLeft = Math.floor(Math.random() * 80); // Posição horizontal na barra lateral (0 a 80%)
-            const randomDuration = 8 + Math.random() * 10; // Entre 8s e 18s de queda
-            const randomSize = 0.6 + Math.random() * 0.5; // Tamanho fonte variável
-            const randomOpacity = 0.3 + Math.random() * 0.5; // Opacidade variável
-
-            el.style.left = `${randomLeft}%`;
-            el.style.fontSize = `${randomSize}rem`;
-            el.style.opacity = randomOpacity;
-            el.style.animation = `text-fall ${randomDuration}s linear forwards`;
-
-            lyricsContainer.appendChild(el);
-
-            // Remove o elemento após a animação para não pesar a memória
-            setTimeout(() => {
-                if(el.parentNode) el.parentNode.removeChild(el);
-            }, randomDuration * 1000);
-        }
-
-        // Cria uma nova frase a cada X milissegundos
-        setInterval(spawnLyric, 600);
-
-
-        // --- 4. EFEITOS DO LETREIRO JAPONÊS ---
+        // --- 3. EFEITOS DO LETREIRO JAPONÊS (Corrigido) ---
         setInterval(() => {
             const items = document.querySelectorAll('.jp-item');
             if(items.length === 0) return;
+
+            // Limpa estados anteriores
             items.forEach(el => el.classList.remove('red-pulse', 'glitch-active'));
+
+            // Seleciona um para pulso vermelho
             const idx1 = Math.floor(Math.random() * items.length);
             items[idx1].classList.add('red-pulse');
+
+            // Ocasionalmente, seleciona outro para glitch branco violento
             if (Math.random() > 0.5) {
                 const idx2 = Math.floor(Math.random() * items.length);
                 items[idx2].classList.add('glitch-active');
@@ -305,14 +281,14 @@
         }, 3000);
 
 
-        // --- 5. CONTADOR ---
+        // --- 4. CONTADOR (Lógica Intacta) ---
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
         let prevTime = { d: "", h: "", m: "", s: "" };
 
         function triggerCountdownGlitch(elementId) {
             const el = document.getElementById(elementId);
             el.classList.remove('glitch-flash');
-            void el.offsetWidth;
+            void el.offsetWidth; // Força o reflow para reiniciar animação
             el.classList.add('glitch-flash');
         }
 
@@ -337,24 +313,75 @@
 
     <script>
         (function() {
+            const lyricsContainer = document.getElementById('lyricsRight');
+            const lyricsArray = [
+                "Poc Vezem", "Ter Qui Mon Serai", "A Rizer Ai", "Que Ce Ne Pas", 
+                "Er As Terer", "Que Re Ze Tai", "A Rizer Ai", "Que Re Ze Tai", 
+                "A Rizer Ai", "Que Ce Ne Pas", "Poc Vezem", "Ai Que Ce Ne Pas", 
+                "Poc Vezem", "Ter Qui Mon Serai", "Poc Vezem"
+            ];
+            
+            function spawnLyricLine() {
+                const el = document.createElement('div');
+                el.classList.add('falling-line');
+                
+                // Escolhe frase aleatória da lista
+                el.innerText = lyricsArray[Math.floor(Math.random() * lyricsArray.length)];
+                
+                // Posicionamento aleatório na lateral (0 a 80% da largura da div lateral)
+                el.style.left = Math.floor(Math.random() * 80) + '%';
+                
+                // Velocidade de queda aleatória (entre 8s e 15s)
+                const duration = 8 + Math.random() * 7;
+                el.style.animation = `fall-text-anim ${duration}s linear forwards`;
+                
+                // Tamanho aleatório para profundidade
+                const fontSize = 0.6 + Math.random() * 0.5; // 0.6rem a 1.1rem
+                el.style.fontSize = fontSize + 'rem';
+                
+                // Variação de opacidade
+                el.style.opacity = 0.3 + Math.random() * 0.5;
+
+                lyricsContainer.appendChild(el);
+
+                // Remove o elemento ao final da animação para não sobrecarregar a memória
+                setTimeout(() => {
+                    if (el.parentNode) el.parentNode.removeChild(el);
+                }, duration * 1000);
+            }
+
+            // Cria uma nova linha a cada X milissegundos
+            setInterval(spawnLyricLine, 500);
+        })();
+    </script>
+
+    <script>
+        (function() {
+            // 1. Configurações
             const audioConfig = {
                 file: 'notfound.ogg',
-                volume: 0.4, 
+                volume: 0.4, // Volume ambiente (0.0 a 1.0)
                 loop: true
             };
+
+            // 2. Criar elemento de áudio invisível (Inject)
             const bgAudio = document.createElement('audio');
             bgAudio.src = audioConfig.file;
             bgAudio.loop = audioConfig.loop;
             bgAudio.preload = 'auto';
             bgAudio.volume = audioConfig.volume;
+            // Ocultar visualmente, mas manter no DOM
             bgAudio.style.display = 'none'; 
             document.body.appendChild(bgAudio);
 
+            // 3. Função de tentativa de reprodução
             function tryPlayAudio() {
                 const playPromise = bgAudio.play();
+
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
                         console.warn("INFERNARIUM: Autoplay blocked. Waiting for user interaction.");
+                        // Adiciona listener para desbloquear no primeiro clique
                         document.addEventListener('click', unlockAudio, { once: true });
                         document.addEventListener('keydown', unlockAudio, { once: true });
                         document.addEventListener('touchstart', unlockAudio, { once: true });
@@ -362,12 +389,16 @@
                 }
             }
 
+            // 4. Função de desbloqueio (Executa apenas uma vez)
             function unlockAudio() {
                 bgAudio.play();
+                // Remove os listeners para não tentar disparar novamente
                 document.removeEventListener('click', unlockAudio);
                 document.removeEventListener('keydown', unlockAudio);
                 document.removeEventListener('touchstart', unlockAudio);
             }
+
+            // Iniciar tentativa
             tryPlayAudio();
         })();
     </script>
