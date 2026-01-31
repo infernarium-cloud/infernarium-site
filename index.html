@@ -18,20 +18,28 @@
             overflow: hidden; position: relative;
         }
 
-        /* --- TERMINAIS LATERAIS --- */
+        /* --- TERMINAL ÚNICO (ESQUERDA) --- */
         .terminal-sidebar {
-            position: absolute; top: 0; width: 20%; height: 100%;
-            padding: 20px; box-sizing: border-box;
-            font-size: 9px; color: #444; /* Mesma cor do input e-mail */
+            position: absolute; top: 0; left: 0; width: 25%; height: 100%;
+            padding: 30px; box-sizing: border-box;
+            font-size: 10px; color: #444;
             overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
-            opacity: 0.4; pointer-events: none;
-            line-height: 1.4;
+            /* Efeito inicial igual ao newsletter */
+            opacity: 0.15; 
+            transition: opacity 0.6s ease-in-out, color 0.5s ease;
+            pointer-events: auto; /* Permitir hover */
+            z-index: 5;
         }
-        .terminal-left { left: 0; text-align: left; border-right: 1px solid #111; }
-        .terminal-right { right: 0; text-align: left; border-left: 1px solid #111; }
         
+        /* Efeito de Brilho ao passar o mouse (Igual ao e-mail) */
+        .terminal-sidebar:hover { 
+            opacity: 0.8; 
+            color: #888;
+        }
+
         .terminal-line { margin-bottom: 4px; word-break: break-all; }
-        .term-user { color: #600; font-weight: bold; } /* Destaque em vermelho escuro */
+        .term-user { color: #600; font-weight: bold; transition: color 0.5s; }
+        .terminal-sidebar:hover .term-user { color: #900; }
 
         /* --- LETREIRO JAPONÊS --- */
         .header-wormhole {
@@ -51,14 +59,13 @@
         }
         .spacer-jp { display: inline-block; width: 100px; }
         
-        /* EFEITOS DINÂMICOS */
         .red-pulse { color: #500 !important; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
         .glitch-active { animation: glitch-flash 0.4s infinite steps(1) !important; color: #fff !important; text-shadow: 0 0 8px #fff !important; }
 
         /* --- CONTEÚDO CENTRAL --- */
         .logo-container { min-height: 200px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 20px; }
         .logo-container img { max-width: 224px; width: 80%; height: auto; animation: slow-breath 8s infinite ease-in-out; pointer-events: none; }
-        .content { text-align: center; border-top: 1px solid #1a1a1a; padding-top: 20px; width: 320px; z-index: 20; }
+        .content { text-align: center; border-top: 1px solid #1a1a1a; padding-top: 20px; width: 320px; z-index: 20; position: relative; }
         h1 { font-weight: 300; letter-spacing: 2px; text-transform: uppercase; font-size: 11px; color: #444; margin-bottom: 20px; }
         
         #countdown { display: flex; gap: 12px; justify-content: center; font-size: 1.1rem; color: #700; font-weight: bold; }
@@ -98,19 +105,19 @@
         @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; } }
 
         @media (max-width: 850px) { 
-            .terminal-sidebar { width: 15%; font-size: 7px; opacity: 0.2; }
+            .terminal-sidebar { width: 100%; height: 30%; top: auto; bottom: 0; opacity: 0.1; }
             .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; } 
         }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
-    <div class="terminal-sidebar terminal-left" id="termLeft"></div>
-    <div class="terminal-sidebar terminal-right" id="termRight"></div>
+    <div class="terminal-sidebar" id="termLeft"></div>
 
     <div class="header-wormhole">
         <div class="wormhole-container">
             <div class="scrolling-text" id="wormholeText">
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                 <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                 <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                 <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
@@ -152,42 +159,38 @@
     </div>
 
     <script>
-        // Bloqueio de inspeção
         function disableInspector(e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; }
         document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
 
-        // Simulação de Terminal
+        // LOGS DO TERMINAL
         const logs = [
-            "sudo apt-get update...", "Fetching gate_keys...", "CORRUPTED_SECTOR_0x066",
-            "Initializing Samhain_Protocol...", "User @infernarium logged in.", "Bypassing firewall...",
-            "Decrypting soul_ledger.db...", "chmod +x ritual.sh", "Connection: STABLE",
-            "Scanning void nodes...", "Update: 66.6% complete", "shred -u identity.txt",
-            "Packet loss in Limbo-West-1", "Awaiting lunar alignment...", "Root access GRANTED"
+            "sudo apt-get update...", "Initializing Samhain_Protocol...", 
+            "User @infernarium logged in.", "Bypassing void firewall...",
+            "chmod +x ritual.sh", "Scanning nodes...", "Root access GRANTED",
+            "Establishing neural link...", "Syncing with 10.31.2026", "Purging logs...",
+            "Loading demonic_assets...", "Inbound connection from 0.0.0.0"
         ];
 
-        function updateTerminal(id) {
-            const term = document.getElementById(id);
+        function updateTerminal() {
+            const term = document.getElementById('termLeft');
             const line = document.createElement('div');
             line.className = 'terminal-line';
             const log = logs[Math.floor(Math.random() * logs.length)];
             line.innerHTML = `<span class="term-user">@infernarium:~$</span> ${log}`;
             term.appendChild(line);
-            if (term.childNodes.length > 25) term.removeChild(term.firstChild);
+            if (term.childNodes.length > 30) term.removeChild(term.firstChild);
         }
+        setInterval(updateTerminal, 1500);
 
-        setInterval(() => updateTerminal('termLeft'), Math.random() * 2000 + 1000);
-        setInterval(() => updateTerminal('termRight'), Math.random() * 2500 + 1000);
-
-        // Glitch do texto Japonês
+        // GLITCH JAPONÊS
         setInterval(() => {
             const items = document.querySelectorAll('.jp-item');
-            if(items.length === 0) return;
             items.forEach(el => el.classList.remove('red-pulse', 'glitch-active'));
             const pulseIndex = Math.floor(Math.random() * items.length);
             items[pulseIndex].classList.add('red-pulse');
         }, 6000);
 
-        // Form Submission
+        // FORM SUBMISSION
         document.getElementById('awakeningForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('.enter-btn');
@@ -205,22 +208,19 @@
             } catch (err) { btn.innerText = 'ERROR'; }
         });
 
-        // Countdown
+        // COUNTDOWN
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
         function updateTimer() {
             const now = new Date().getTime();
             const distance = targetDate - now;
             if (distance < 0) { document.getElementById("countdown").innerHTML = "ESTABLISHED"; return; }
-            const d = Math.floor(distance / 86400000);
-            const h = Math.floor((distance % 86400000) / 3600000);
-            const m = Math.floor((distance % 3600000) / 60000);
-            const s = Math.floor((distance % 60000) / 1000);
-            document.getElementById("days").innerText = d.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = h.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
+            document.getElementById("days").innerText = Math.floor(distance / 86400000).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((distance % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
             const sec = document.getElementById("seconds");
-            sec.innerText = s.toString().padStart(2, '0');
-            sec.setAttribute('data-text', s.toString().padStart(2, '0'));
+            sec.innerText = s;
+            sec.setAttribute('data-text', s);
         }
         setInterval(updateTimer, 1000);
         updateTimer();
