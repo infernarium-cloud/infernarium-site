@@ -1,104 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM | Samhain 2026</title>
+    
+    <link rel="icon" type="image/png" href="seal_01.png">
+
     <style>
         /* TRAVA DE SELEÇÃO GLOBAL */
-        * { -webkit-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
+        * {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
 
         body {
-            background-color: #050505; color: #e0e0e0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; margin: 0; font-family: 'Courier New', Courier, monospace;
-            overflow: hidden; position: relative;
+            background-color: #050505;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* --- SIDEBARS DE SELOS (OCULTOS TEMPORARIAMENTE) --- */
-        .seal-sidebar { 
-            position: absolute; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            display: none; /* Camada isolada e oculta */
-            flex-direction: column; 
-            gap: 8px; 
-            z-index: 10; 
+        /* --- SIDEBARS DE SELOS --- */
+        .seal-sidebar {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
         }
+
         .seal-left { left: 20px; }
         .seal-right { right: 20px; }
-        .seal-sidebar img { width: 46px; height: auto; opacity: 0.6; filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8)); pointer-events: none; }
 
-        /* --- LETREIRO JAPONÊS --- */
-        .header-wormhole {
-            position: absolute; top: 20px; width: 100%;
-            display: flex; justify-content: center; z-index: 10;
+        .seal-sidebar img {
+            width: 46px; 
+            height: auto;
+            opacity: 0.6;
+            filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8));
+            pointer-events: none;
         }
+
+        /* --- LETREIRO TOPO --- */
+        .header-wormhole {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
         .wormhole-container {
-            width: 90vw; max-width: 1000px; overflow: hidden; white-space: nowrap; position: relative;
+            width: 90vw;
+            max-width: 1000px;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
             -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
             mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
         }
+
         .scrolling-text {
-            display: inline-block; white-space: nowrap;
+            display: inline-block;
+            white-space: nowrap;
             animation: wormhole-scroll 20s linear infinite;
-            font-size: 0.8rem; color: #2a2a2a; letter-spacing: 3px;
+            font-size: 0.65rem;
+            color: #2a2a2a;
+            letter-spacing: 3px;
         }
+
         .spacer-jp { display: inline-block; width: 115px; }
-        .red-pulse { color: #400; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
+
+        .red-pulse {
+            color: #400;
+            font-weight: bold;
+            animation: pulse-red-text 2s infinite ease-in-out;
+        }
 
         /* --- CONTEÚDO CENTRAL --- */
-        .logo-container { min-height: 200px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 20px; }
-        .logo-container img { max-width: 220px; width: 80%; height: auto; animation: slow-breath 8s infinite ease-in-out; pointer-events: none; }
-        .content { text-align: center; border-top: 1px solid #1a1a1a; padding-top: 20px; width: 280px; }
-        h1 { font-weight: 300; letter-spacing: 2px; text-transform: uppercase; font-size: 11px; color: #444; margin-bottom: 20px; }
-        #countdown { display: flex; gap: 12px; justify-content: center; font-size: 1.1rem; color: #700; font-weight: bold; }
+        .logo-container {
+            min-height: 200px; 
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 224px; 
+            width: 80%; 
+            height: auto;
+            animation: slow-breath 8s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .content {
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 20px;
+            width: 320px; 
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+            font-size: 11px; 
+            color: #444;
+            margin-bottom: 20px;
+            white-space: nowrap; 
+        }
+
+        #countdown {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            font-size: 1.1rem; 
+            color: #700;
+            font-weight: bold;
+        }
+
         .time-block { display: flex; flex-direction: column; align-items: center; }
         .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
 
-        /* --- NEWSLETTER SECTION --- */
-        .newsletter-section { margin-top: 40px; opacity: 0.15; transition: opacity 0.6s ease-in-out; }
-        .newsletter-section:hover { opacity: 0.7; }
-        .newsletter-label { display: block; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
-        
-        input#email { 
-            background: transparent; border: none; border-bottom: 1px solid #222; 
-            color: #444; font-family: 'Courier New', monospace; font-size: 10px; 
-            width: 200px; text-align: center; outline: none; margin-bottom: 15px;
+        .glitch {
+            position: relative;
+            display: inline-block;
+            color: #800;
+            animation: glitch-flash 2.5s infinite steps(1); 
         }
-        
-        .enter-btn {
-            display: block; margin: 0 auto; background: transparent; border: 1px solid #222;
-            color: #333; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px;
-            text-transform: uppercase; letter-spacing: 4px; padding: 8px 20px;
-            transition: all 0.4s ease;
-        }
-        .enter-btn:hover { border-color: #600; color: #800; background: rgba(128, 0, 0, 0.05); }
 
-        /* --- RODAPÉ --- */
-        .footer-credits { position: absolute; bottom: 25px; right: 5%; font-size: 0.65rem; color: #2a2a2a; letter-spacing: 2px; text-transform: uppercase; }
-        .glitch { position: relative; display: inline-block; color: #800; animation: glitch-flash 2.5s infinite steps(1); }
-        .glitch-move { position: relative; display: inline-block; color: #800; animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505; overflow: hidden;
+            visibility: hidden;
+        }
+
+        .pulse-dot {
+            width: 3px;
+            height: 3px;
+            background-color: #900;
+            border-radius: 50%;
+            margin: 25px auto 0 auto;
+            animation: slow-breath 8s infinite ease-in-out;
+        }
+
+        input#email:focus {
+            border-bottom: 1px solid #600 !important;
+            color: #999 !important;
+        }
+
+        .footer-credits {
+            position: absolute;
+            bottom: 25px;
+            right: 5%;
+            font-size: 0.65rem;
+            color: #2a2a2a;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
 
         /* --- ANIMAÇÕES --- */
-        @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
+        @keyframes pulse-red-text {
+            0%, 100% { color: #400; text-shadow: 0 0 0px transparent; }
+            50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+        }
         @keyframes wormhole-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
-        @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; } }
+        @keyframes slow-breath {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.05)); opacity: 0.3; }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.3)); opacity: 0.8; }
+        }
+        @keyframes glitch-flash {
+            0%, 92%, 94%, 97%, 100% { color: #800; text-shadow: none; }
+            93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; }
+        }
 
-        @media (max-width: 850px) { .seal-sidebar { display: none; } .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; } }
+        @media (max-width: 850px) {
+            .seal-sidebar { display: none; }
+            .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; }
+        }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
 
     <div class="seal-sidebar seal-left">
-        <img src="seal_01.png" alt="S01"> <img src="seal_02.png" alt="S02"> <img src="seal_03.png" alt="S03"> <img src="seal_08.png" alt="S08"> <img src="seal_09.png" alt="S09">
-        <img src="seal_10.png" alt="S10"> <img src="seal_11.png" alt="S11"> <img src="seal_12.png" alt="S12"> <img src="seal_13.png" alt="S13"> <img src="seal_14.png" alt="S14">
+        <img src="seal_01.png" alt="S01">
+        <img src="seal_02.png" alt="S02">
+        <img src="seal_03.png" alt="S03">
+        <img src="seal_08.png" alt="S08">
+        <img src="seal_09.png" alt="S09">
+        <img src="seal_10.png" alt="S10">
+        <img src="seal_11.png" alt="S11">
+        <img src="seal_12.png" alt="S12">
+        <img src="seal_13.png" alt="S13">
+        <img src="seal_14.png" alt="S14">
     </div>
 
     <div class="seal-sidebar seal-right">
-        <img src="seal_15.png" alt="S15"> <img src="seal_16.png" alt="S16"> <img src="seal_17.png" alt="S17"> <img src="seal_20.png" alt="S20">
+        <img src="seal_15.png" alt="S15">
+        <img src="seal_16.png" alt="S16">
+        <img src="seal_17.png" alt="S17">
+        <img src="seal_20.png" alt="S20">
     </div>
 
     <div class="header-wormhole">
@@ -110,14 +227,12 @@
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
                 <span>商売繁盛</span><div class="spacer-jp"></div>
-                <span class="red-pulse">商売繁盛</span><div class="spacer-jp"></div>
-                <span>商売繁盛</span><div class="spacer-jp"></div>
             </div>
         </div>
     </div>
 
     <div class="logo-container">
-        <img src="logo.png" alt="[ INFERNARIUM ]">
+        <img src="logo.png" alt="[ INFERNARIUM ]" ondragstart="return false">
     </div>
 
     <div class="content">
@@ -131,56 +246,53 @@
                 <span class="label">Sec</span>
             </div>
         </div>
+        <div class="pulse-dot"></div>
 
-        <section class="newsletter-section">
-            <form id="awakeningForm">
-                <label class="newsletter-label">Leave your trail for the awakening</label>
-                <input type="email" id="email" placeholder="email@example.com" required>
-                <button type="submit" class="enter-btn">ENTER</button>
+        <section style="margin-top: 50px; text-align: center; opacity: 0.6; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+            <form action="#" method="POST" style="display: inline-block;">
+                <label for="email" style="display: block; font-family: 'Courier New', monospace; font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">
+                    Deixe seu rastro para o despertar
+                </label>
+                <input type="email" id="email" name="email" placeholder="email@exemplo.com" required 
+                    style="background: transparent; border: none; border-bottom: 1px solid #333; color: #666; font-family: 'Courier New', monospace; font-size: 12px; width: 200px; text-align: center; outline: none; transition: border-color 0.5s;">
+                <button type="submit" style="background: transparent; border: none; color: #444; cursor: pointer; font-family: 'Courier New', monospace; font-size: 12px; margin-left: 10px; text-transform: uppercase;">
+                    [ Enviar ]
+                </button>
             </form>
         </section>
     </div>
 
     <div class="footer-credits">
-        Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
+        Design by <span class="footer-name">KOOPER</span> 2026 &reg;
     </div>
 
     <script>
-        function disableInspector(e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; }
+        function disableInspector(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+        }
         document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
 
-        document.getElementById('awakeningForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('.enter-btn');
-            const originalText = btn.innerText;
-            btn.innerText = 'SAVING...';
-            try {
-                await fetch('https://infernarium-collector.passos89rafael.workers.dev', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: document.getElementById('email').value })
-                });
-                btn.innerText = 'SAVED';
-                document.getElementById('email').value = '';
-                setTimeout(() => btn.innerText = originalText, 3000);
-            } catch (err) { btn.innerText = 'ERROR'; }
-        });
+        const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime(); 
 
-        const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
         function updateTimer() {
             const now = new Date().getTime();
             const distance = targetDate - now;
-            if (distance < 0) { document.getElementById("countdown").innerHTML = "ESTABLISHED"; return; }
-            const d = Math.floor(distance / 86400000);
-            const h = Math.floor((distance % 86400000) / 3600000);
-            const m = Math.floor((distance % 3600000) / 60000);
-            const s = Math.floor((distance % 60000) / 1000);
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "ESTABLISHED";
+                return;
+            }
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const sStr = s.toString().padStart(2, '0');
             document.getElementById("days").innerText = d.toString().padStart(2, '0');
             document.getElementById("hours").innerText = h.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
-            const sec = document.getElementById("seconds");
-            sec.innerText = s.toString().padStart(2, '0');
-            sec.setAttribute('data-text', s.toString().padStart(2, '0'));
+            const secondsEl = document.getElementById("seconds");
+            secondsEl.innerText = sStr;
+            secondsEl.setAttribute('data-text', sStr);
         }
         setInterval(updateTimer, 1000);
         updateTimer();
