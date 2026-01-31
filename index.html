@@ -24,43 +24,37 @@
             padding: 30px; box-sizing: border-box;
             font-size: 10px; color: #444;
             overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
-            /* Efeito inicial igual ao newsletter */
             opacity: 0.15; 
             transition: opacity 0.6s ease-in-out, color 0.5s ease;
-            pointer-events: auto; /* Permitir hover */
+            pointer-events: auto;
             z-index: 5;
         }
-        
-        /* Efeito de Brilho ao passar o mouse (Igual ao e-mail) */
-        .terminal-sidebar:hover { 
-            opacity: 0.8; 
-            color: #888;
-        }
-
+        .terminal-sidebar:hover { opacity: 0.8; color: #888; }
         .terminal-line { margin-bottom: 4px; word-break: break-all; }
         .term-user { color: #600; font-weight: bold; transition: color 0.5s; }
         .terminal-sidebar:hover .term-user { color: #900; }
 
-        /* --- LETREIRO JAPONÊS --- */
+        /* --- LETREIRO JAPONÊS (CORREÇÃO DE LOOP) --- */
         .header-wormhole {
-            position: absolute; top: 35px; left: 0; width: 100%; height: 25px;
-            display: flex; justify-content: center; z-index: 10;
+            position: absolute; top: 35px; left: 0; width: 100%; height: 30px;
+            overflow: hidden; z-index: 10;
+            display: flex; align-items: center;
         }
         .wormhole-container {
-            width: 100%; overflow: hidden; white-space: nowrap; position: relative;
-            -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+            display: flex; width: 200%; /* Garante espaço para o clone do texto */
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
         }
         .scrolling-text {
-            display: inline-block; white-space: nowrap;
-            animation: wormhole-scroll 40s linear infinite;
-            font-size: 0.72rem;
-            color: #1a1a1a; letter-spacing: 6px;
+            display: flex; white-space: nowrap;
+            animation: wormhole-scroll 30s linear infinite;
+            font-size: 0.72rem; color: #1a1a1a; letter-spacing: 8px;
         }
-        .spacer-jp { display: inline-block; width: 100px; }
+        .jp-group { display: flex; align-items: center; }
+        .spacer-jp { width: 80px; flex-shrink: 0; }
         
+        /* EFEITOS DINÂMICOS */
         .red-pulse { color: #500 !important; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
-        .glitch-active { animation: glitch-flash 0.4s infinite steps(1) !important; color: #fff !important; text-shadow: 0 0 8px #fff !important; }
 
         /* --- CONTEÚDO CENTRAL --- */
         .logo-container { min-height: 200px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 20px; }
@@ -72,59 +66,57 @@
         .time-block { display: flex; flex-direction: column; align-items: center; }
         .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
 
-        /* --- NEWSLETTER SECTION --- */
+        /* --- NEWSLETTER --- */
         .newsletter-section { margin-top: 40px; opacity: 0.15; transition: opacity 0.6s ease-in-out; }
         .newsletter-section:hover { opacity: 0.7; }
-        .newsletter-label { display: block; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
         input#email { 
             background: transparent; border: none; border-bottom: 1px solid #222; 
             color: #444; font-family: 'Courier New', monospace; font-size: 10px; 
             width: 200px; text-align: center; outline: none; margin-bottom: 15px;
-            transition: border-color 0.5s;
         }
-        input#email:focus { border-bottom: 1px solid #600; color: #888; }
-        
         .enter-btn {
-            display: block; margin: 0 auto; background: transparent; border: 1px solid #222;
-            color: #333; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px;
-            text-transform: uppercase; letter-spacing: 4px; padding: 8px 20px;
-            transition: all 0.4s ease;
+            background: transparent; border: 1px solid #222; color: #333; cursor: pointer; 
+            font-family: 'Courier New', monospace; font-size: 10px; text-transform: uppercase; 
+            letter-spacing: 4px; padding: 8px 20px; transition: all 0.4s ease;
         }
         .enter-btn:hover { border-color: #600; color: #800; background: rgba(128, 0, 0, 0.05); }
 
-        /* --- RODAPÉ --- */
         .footer-credits { position: absolute; bottom: 25px; right: 5%; font-size: 0.65rem; color: #2a2a2a; letter-spacing: 2px; text-transform: uppercase; z-index: 20; }
-        .glitch { position: relative; display: inline-block; color: #800; animation: glitch-flash 2.5s infinite steps(1); }
         .glitch-move { position: relative; display: inline-block; color: #800; animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out; }
 
-        /* --- ANIMAÇÕES --- */
+        @keyframes wormhole-scroll { 
+            from { transform: translateX(0); } 
+            to { transform: translateX(-50%); } 
+        }
         @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
-        @keyframes wormhole-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
-        @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; } }
+        @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; } }
 
-        @media (max-width: 850px) { 
-            .terminal-sidebar { width: 100%; height: 30%; top: auto; bottom: 0; opacity: 0.1; }
-            .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; } 
-        }
+        @media (max-width: 850px) { .terminal-sidebar { width: 100%; height: 20%; bottom: 0; top: auto; } }
     </style>
 </head>
-<body oncontextmenu="return false" onkeydown="return disableInspector(event)">
+<body oncontextmenu="return false">
 
     <div class="terminal-sidebar" id="termLeft"></div>
 
     <div class="header-wormhole">
         <div class="wormhole-container">
             <div class="scrolling-text" id="wormholeText">
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                <div class="jp-group">
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                </div>
+                <div class="jp-group">
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -139,15 +131,11 @@
             <div class="time-block"><span id="days">--</span><span class="label">Days</span></div>
             <div class="time-block"><span id="hours">--</span><span class="label">Hrs</span></div>
             <div class="time-block"><span id="minutes">--</span><span class="label">Min</span></div>
-            <div class="time-block">
-                <span id="seconds" class="glitch" data-text="--">--</span>
-                <span class="label">Sec</span>
-            </div>
+            <div class="time-block"><span id="seconds">--</span><span class="label">Sec</span></div>
         </div>
 
         <section class="newsletter-section">
             <form id="awakeningForm">
-                <label class="newsletter-label">Leave your trail for the awakening</label>
                 <input type="email" id="email" placeholder="email@example.com" required>
                 <button type="submit" class="enter-btn">ENTER</button>
             </form>
@@ -155,72 +143,39 @@
     </div>
 
     <div class="footer-credits">
-        Design by <span class="glitch-move" data-text="KOOPER">KOOPER</span> 2026 &reg;
+        Design by <span class="glitch-move">KOOPER</span> 2026 &reg;
     </div>
 
     <script>
-        function disableInspector(e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; }
-        document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
-
-        // LOGS DO TERMINAL
-        const logs = [
-            "sudo apt-get update...", "Initializing Samhain_Protocol...", 
-            "User @infernarium logged in.", "Bypassing void firewall...",
-            "chmod +x ritual.sh", "Scanning nodes...", "Root access GRANTED",
-            "Establishing neural link...", "Syncing with 10.31.2026", "Purging logs...",
-            "Loading demonic_assets...", "Inbound connection from 0.0.0.0"
-        ];
-
+        // TERMINAL LOGS
+        const logs = ["Initializing...", "User @infernarium logged in.", "Bypassing firewall...", "Syncing SAMHAIN_v2.0...", "Connection STABLE", "Root access GRANTED", "Scanning void..."];
         function updateTerminal() {
             const term = document.getElementById('termLeft');
             const line = document.createElement('div');
             line.className = 'terminal-line';
-            const log = logs[Math.floor(Math.random() * logs.length)];
-            line.innerHTML = `<span class="term-user">@infernarium:~$</span> ${log}`;
+            line.innerHTML = `<span class="term-user">@infernarium:~$</span> ${logs[Math.floor(Math.random() * logs.length)]}`;
             term.appendChild(line);
             if (term.childNodes.length > 30) term.removeChild(term.firstChild);
         }
         setInterval(updateTerminal, 1500);
 
-        // GLITCH JAPONÊS
+        // PULSE JAPONÊS
         setInterval(() => {
             const items = document.querySelectorAll('.jp-item');
-            items.forEach(el => el.classList.remove('red-pulse', 'glitch-active'));
-            const pulseIndex = Math.floor(Math.random() * items.length);
-            items[pulseIndex].classList.add('red-pulse');
-        }, 6000);
-
-        // FORM SUBMISSION
-        document.getElementById('awakeningForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('.enter-btn');
-            const originalText = btn.innerText;
-            btn.innerText = 'SAVING...';
-            try {
-                await fetch('https://infernarium-collector.passos89rafael.workers.dev', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: document.getElementById('email').value })
-                });
-                btn.innerText = 'SAVED';
-                document.getElementById('email').value = '';
-                setTimeout(() => btn.innerText = originalText, 3000);
-            } catch (err) { btn.innerText = 'ERROR'; }
-        });
+            items.forEach(el => el.classList.remove('red-pulse'));
+            items[Math.floor(Math.random() * items.length)].classList.add('red-pulse');
+        }, 4000);
 
         // COUNTDOWN
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
         function updateTimer() {
             const now = new Date().getTime();
             const distance = targetDate - now;
-            if (distance < 0) { document.getElementById("countdown").innerHTML = "ESTABLISHED"; return; }
+            if (distance < 0) return;
             document.getElementById("days").innerText = Math.floor(distance / 86400000).toString().padStart(2, '0');
             document.getElementById("hours").innerText = Math.floor((distance % 86400000) / 3600000).toString().padStart(2, '0');
             document.getElementById("minutes").innerText = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0');
-            const s = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
-            const sec = document.getElementById("seconds");
-            sec.innerText = s;
-            sec.setAttribute('data-text', s);
+            document.getElementById("seconds").innerText = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
         }
         setInterval(updateTimer, 1000);
         updateTimer();
