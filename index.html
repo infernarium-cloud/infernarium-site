@@ -4,240 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFERNARIUM | Samhain 2026</title>
-    
-    <link rel="icon" type="image/png" href="seal_01.png">
-
     <style>
-        /* TRAVA DE SELEÇÃO GLOBAL */
-        * { -webkit-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
-
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body {
             background-color: #050505; color: #e0e0e0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; margin: 0; font-family: 'Courier New', Courier, monospace;
+            display: flex; align-items: center; justify-content: center;
+            height: 100vh; margin: 0; font-family: 'Courier New', monospace;
             overflow: hidden; position: relative;
         }
 
-        /* --- TERMINAL (ESQUERDA) --- */
+        /* TERMINAL (ESQUERDA) */
         .terminal-sidebar {
-            position: absolute; top: 0; left: 0; width: 28%; height: 100%;
-            padding: 30px; box-sizing: border-box;
-            font-size: 10px; color: #444;
-            overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
-            opacity: 0.15; z-index: 5;
+            position: absolute; top: 0; left: 0; width: 25%; height: 100%;
+            padding: 20px; font-size: 10px; color: #444; opacity: 0.2; z-index: 5;
         }
 
-        /* --- CORREÇÃO: LYRICS RAIN (DIREITA) --- */
+        /* CASCATA (DIREITA) - TOTALMENTE VISÍVEL AGORA */
         #lyricsRight {
-            position: absolute; 
-            top: 0; 
-            right: 0; 
-            width: 30%; /* Largura clara para a cascata */
-            height: 100%;
-            overflow: hidden; 
-            pointer-events: none; 
-            z-index: 99; /* Valor alto para garantir que apareça sobre o fundo */
+            position: absolute; top: 0; right: 0; width: 25%; height: 100%;
+            z-index: 100; pointer-events: none; overflow: hidden;
+            border-left: 1px solid rgba(255,0,0,0.1);
         }
         
         .falling-line {
-            position: absolute;
-            color: #f00; /* Vermelho puro para teste de visibilidade */
-            font-size: 12px;
-            font-weight: bold;
-            white-space: nowrap;
-            top: -100px;
-            text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
+            position: absolute; color: #ff0000; font-size: 12px; font-weight: bold;
+            white-space: nowrap; top: -50px; text-shadow: 0 0 5px #f00;
+            animation: fall-anim linear forwards;
         }
 
-        /* --- LETREIRO JAPONÊS --- */
-        .header-wormhole {
-            position: absolute; top: 35px; left: 0; width: 100%; height: 30px;
-            overflow: hidden; z-index: 10;
-            display: flex; align-items: center;
-        }
-        .wormhole-container {
-            display: flex; width: 200%;
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        }
-        .scrolling-text {
-            display: flex; white-space: nowrap;
-            animation: wormhole-scroll 40s linear infinite;
-            font-size: 0.72rem; color: #1a1a1a; letter-spacing: 8px;
-        }
-        .jp-group { display: flex; align-items: center; }
-        .spacer-jp { width: 80px; flex-shrink: 0; }
-
-        /* --- CONTEÚDO CENTRAL --- */
-        .logo-container { min-height: 200px; display: flex; align-items: flex-end; justify-content: center; margin-bottom: 20px; }
-        .logo-container img { max-width: 224px; width: 80%; height: auto; animation: slow-breath 8s infinite ease-in-out; pointer-events: none; }
-        .content { text-align: center; border-top: 1px solid #1a1a1a; padding-top: 20px; width: 320px; z-index: 20; position: relative; }
-        h1 { font-weight: 300; letter-spacing: 2px; text-transform: uppercase; font-size: 11px; color: #444; margin-bottom: 20px; }
-        
-        #countdown { display: flex; gap: 12px; justify-content: center; font-size: 1.1rem; color: #700; font-weight: bold; }
-        .time-block { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
-        .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
-        .glitch-flash { position: relative; display: inline-block; animation: flash-white 0.2s steps(1); }
-
-        /* --- NEWSLETTER --- */
-        .newsletter-section { margin-top: 40px; opacity: 0.15; transition: opacity 0.6s ease-in-out; }
-        .newsletter-section:hover { opacity: 0.7; }
-        .newsletter-label { display: block; font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; text-align: center; }
-        input#email { 
-            background: transparent; border: none; border-bottom: 1px solid #222; 
-            color: #444; font-family: 'Courier New', monospace; font-size: 10px; 
-            width: 240px; text-align: center; outline: none; margin-bottom: 20px;
-        }
-        .enter-btn {
-            display: block; margin: 0 auto; background: transparent; border: 1px solid #222; 
-            color: #333; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px; 
-            text-transform: uppercase; letter-spacing: 4px; padding: 8px 25px; transition: all 0.4s ease;
-        }
-        .enter-btn:hover { border-color: #600; color: #800; background: rgba(128, 0, 0, 0.05); }
-
-        /* --- RODAPÉ --- */
-        .footer-credits { position: absolute; bottom: 25px; right: 5%; font-size: 0.65rem; color: #2a2a2a; letter-spacing: 2px; text-transform: uppercase; z-index: 20; }
-        .glitch-move { 
-            position: relative; display: inline-block; color: #800; 
-            animation: glitch-text-anim 3s infinite linear alternate-reverse; 
-        }
-
-        /* --- ANIMAÇÕES --- */
-        @keyframes wormhole-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes flash-white { 0%, 100% { color: #700; text-shadow: none; } 50% { color: #fff; text-shadow: 0 0 10px #fff; transform: scale(1.1); } }
-        @keyframes glitch-text-anim {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-        /* ANIMAÇÃO DA CASCATA */
-        @keyframes fall-text-anim {
+        @keyframes fall-anim {
             0% { transform: translateY(0); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(110vh); opacity: 0; }
         }
 
-        @media (max-width: 850px) { .terminal-sidebar { width: 100%; height: 25%; bottom: 0; top: auto; background: rgba(0,0,0,0.8); } }
+        /* CONTEÚDO CENTRAL */
+        .content { text-align: center; z-index: 20; border-top: 1px solid #1a1a1a; padding-top: 20px; }
+        h1 { font-size: 11px; color: #444; letter-spacing: 2px; text-transform: uppercase; }
+        #countdown { color: #800; font-size: 1.5rem; font-weight: bold; margin: 20px 0; }
+        .logo-container img { max-width: 220px; opacity: 0.6; }
+
     </style>
 </head>
-<body oncontextmenu="return false">
+<body>
 
     <div class="terminal-sidebar" id="termLeft"></div>
-
     <div id="lyricsRight"></div>
 
-    <div class="header-wormhole">
-        <div class="wormhole-container">
-            <div class="scrolling-text">
-                <div class="jp-group">
-                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                    <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="logo-container">
-        <img src="logo.png" alt="[ INFERNARIUM ]">
-    </div>
-
+    <div class="logo-container"><img src="logo.png"></div>
     <div class="content">
         <h1>Opening on Halloween 2026</h1>
-        <div id="countdown">
-            <div class="time-block"><span id="days">00</span><span class="label">Days</span></div>
-            <div class="time-block"><span id="hours">00</span><span class="label">Hrs</span></div>
-            <div class="time-block"><span id="minutes">00</span><span class="label">Min</span></div>
-            <div class="time-block"><span id="seconds">00</span><span class="label">Sec</span></div>
-        </div>
-
-        <section class="newsletter-section">
-            <form id="awakeningForm">
-                <label class="newsletter-label">Leave your trail for the awakening</label>
-                <input type="email" id="email" placeholder="email@example.com" required>
-                <button type="submit" class="enter-btn">ENTER</button>
-            </form>
-        </section>
-    </div>
-
-    <div class="footer-credits">
-        Design by <span class="glitch-move">KOOPER</span> 2026 &reg;
+        <div id="countdown">00:00:00:00</div>
     </div>
 
     <script>
-        // --- 1. TERMINAL (LOGICA MANTIDA) ---
-        const term = document.getElementById('termLeft');
-        function updateTerminal() {
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-            line.innerHTML = `<span class="term-user">@infernarium:~$</span> <span class="term-cmd">Executing ritual sequence...</span>`;
-            term.appendChild(line);
-            term.scrollTop = term.scrollHeight;
-            if (term.childNodes.length > 25) term.removeChild(term.firstChild);
-        }
-        setInterval(updateTerminal, 1800);
-
-        // --- 2. CASCATA DE LETRAS (REFEITA) ---
-        const lyricsContainer = document.getElementById('lyricsRight');
-        const lyricsArray = [
+        // CASCATA DE LETRAS
+        const lyrics = [
             "Poc Vezem", "Ter Qui Mon Serai", "A Rizer Ai", "Que Ce Ne Pas", 
             "Er As Terer", "Que Re Ze Tai", "A Rizer Ai", "Que Re Ze Tai", 
             "A Rizer Ai", "Que Ce Ne Pas", "Poc Vezem", "Ai Que Ce Ne Pas", 
             "Poc Vezem", "Ter Qui Mon Serai", "Poc Vezem"
         ];
         
-        function spawnLyricLine() {
+        function spawn() {
+            const container = document.getElementById('lyricsRight');
             const el = document.createElement('div');
             el.className = 'falling-line';
-            el.innerText = lyricsArray[Math.floor(Math.random() * lyricsArray.length)];
-            
-            // Espaçamento horizontal randômico dentro da div da direita
-            el.style.left = Math.floor(Math.random() * 60) + '%';
-            
-            // Duração randômica para criar efeito de cascata irregular
-            const duration = 5 + Math.random() * 5;
-            el.style.animation = `fall-text-anim ${duration}s linear forwards`;
-            
-            lyricsContainer.appendChild(el);
-
-            // Deletar o elemento após a animação
-            setTimeout(() => { el.remove(); }, duration * 1000);
+            el.innerText = lyrics[Math.floor(Math.random() * lyrics.length)];
+            el.style.left = Math.random() * 70 + "%";
+            const dur = 4 + Math.random() * 4;
+            el.style.animationDuration = dur + "s";
+            container.appendChild(el);
+            setTimeout(() => el.remove(), dur * 1000);
         }
+        setInterval(spawn, 500);
 
-        // Dispara uma nova frase a cada 600ms
-        setInterval(spawnLyricLine, 600);
-
-        // --- 3. CONTADOR ---
-        const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
-        function updateTimer() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-            if (distance < 0) return;
-            document.getElementById("days").innerText = Math.floor(distance / 86400000).toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
-        }
-        setInterval(updateTimer, 1000);
-    </script>
-
-    <script>
-        (function() {
-            const bgAudio = document.createElement('audio');
-            bgAudio.src = 'notfound.ogg';
-            bgAudio.loop = true;
-            bgAudio.volume = 0.4;
-            bgAudio.style.display = 'none'; 
-            document.body.appendChild(bgAudio);
-            const unlock = () => { bgAudio.play(); document.removeEventListener('click', unlock); };
-            document.addEventListener('click', unlock);
-        })();
+        // ÁUDIO INJECTOR
+        const audio = new Audio('notfound.ogg');
+        audio.loop = true;
+        document.addEventListener('click', () => audio.play(), {once: true});
     </script>
 </body>
 </html>
