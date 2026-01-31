@@ -20,39 +20,31 @@
 
         /* --- SIDEBARS DE SELOS (ISOLADOS/OCULTOS) --- */
         .seal-sidebar {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            display: none; 
-            flex-direction: column;
-            gap: 8px;
-            z-index: 10;
+            position: absolute; top: 50%; transform: translateY(-50%);
+            display: none; flex-direction: column; gap: 8px; z-index: 10;
         }
-        .seal-left { left: 20px; }
-        .seal-right { right: 20px; }
         .seal-sidebar img { width: 46px; height: auto; opacity: 0.6; filter: grayscale(100%) drop-shadow(0 0 8px rgba(150, 0, 0, 0.8)); pointer-events: none; }
 
-        /* --- LETREIRO JAPONÊS --- */
+        /* --- LETREIRO JAPONÊS (HARMONIZADO) --- */
         .header-wormhole {
-            position: absolute; top: 30px; left: 0; width: 100%; height: 20px;
+            position: absolute; top: 35px; left: 0; width: 100%; height: 25px;
             display: flex; justify-content: center; z-index: 10;
         }
         .wormhole-container {
             width: 100%; overflow: hidden; white-space: nowrap; position: relative;
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
         }
         .scrolling-text {
             display: inline-block; white-space: nowrap;
-            animation: wormhole-scroll 25s linear infinite;
-            font-size: 0.65rem; color: #2a2a2a; letter-spacing: 4px;
+            animation: wormhole-scroll 40s linear infinite; /* Mais lento e suave */
+            font-size: 0.65rem; color: #1a1a1a; letter-spacing: 5px;
+            transition: color 0.5s ease;
         }
-        .spacer-jp { display: inline-block; width: 120px; }
+        .spacer-jp { display: inline-block; width: 100px; }
         
-        /* PULSO VERMELHO ÚNICO */
-        .red-pulse { color: #400; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
-        
-        /* EFEITO GLITCH ALEATÓRIO */
+        /* EFEITOS DINÂMICOS */
+        .red-pulse { color: #500 !important; font-weight: bold; animation: pulse-red-text 2s infinite ease-in-out; }
         .glitch-active { animation: glitch-flash 0.4s infinite steps(1) !important; color: #fff !important; text-shadow: 0 0 8px #fff !important; }
 
         /* --- CONTEÚDO CENTRAL --- */
@@ -69,7 +61,6 @@
         .newsletter-section { margin-top: 40px; opacity: 0.15; transition: opacity 0.6s ease-in-out; }
         .newsletter-section:hover { opacity: 0.7; }
         .newsletter-label { display: block; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
-        
         input#email { 
             background: transparent; border: none; border-bottom: 1px solid #222; 
             color: #444; font-family: 'Courier New', monospace; font-size: 10px; 
@@ -98,7 +89,7 @@
         @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
         @keyframes glitch-flash { 0%, 92%, 94%, 97%, 100% { color: #800; } 93%, 96% { color: #fff; text-shadow: 0 0 5px #fff; } }
 
-        @media (max-width: 850px) { .seal-sidebar { display: none; } .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; } }
+        @media (max-width: 850px) { .footer-credits { right: 0; width: 100%; text-align: center; bottom: 15px; } }
     </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return disableInspector(event)">
@@ -119,7 +110,7 @@
         <div class="wormhole-container">
             <div class="scrolling-text" id="wormholeText">
                 <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
-                <span class="jp-item red-pulse">商売繁盛</span><div class="spacer-jp"></div>
+                <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                 <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                 <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                 <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
@@ -169,17 +160,32 @@
         function disableInspector(e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; }
         document.addEventListener('dragstart', (e) => { if (e.target.nodeName === 'IMG') e.preventDefault(); });
 
-        // SISTEMA DE GLITCH RÍTMICO (6 segundos)
+        // SISTEMA DE SORTEIO DUPLO (6 SEGUNDOS)
         setInterval(() => {
-            // Seleciona todos exceto o que já tem o pulso fixo para evitar conflito visual direto
-            const items = document.querySelectorAll('.jp-item:not(.red-pulse)');
-            const randomItem = items[Math.floor(Math.random() * items.length)];
+            const items = document.querySelectorAll('.jp-item');
             
-            randomItem.classList.add('glitch-active');
+            // Limpa estados anteriores
+            items.forEach(el => {
+                el.classList.remove('red-pulse', 'glitch-active');
+            });
+
+            // Sorteia o novo elemento de Pulso
+            const pulseIndex = Math.floor(Math.random() * items.length);
+            items[pulseIndex].classList.add('red-pulse');
+
+            // Sorteia o elemento de Glitch (garantindo que não seja o mesmo do pulso)
+            let glitchIndex;
+            do {
+                glitchIndex = Math.floor(Math.random() * items.length);
+            } while (glitchIndex === pulseIndex);
+
+            items[glitchIndex].classList.add('glitch-active');
+
+            // Remove o glitch um pouco antes do próximo ciclo para impacto visual
             setTimeout(() => { 
-                randomItem.classList.remove('glitch-active'); 
-            }, 1200); 
-        }, 6000); 
+                items[glitchIndex].classList.remove('glitch-active'); 
+            }, 1500);
+        }, 6000);
 
         document.getElementById('awakeningForm').addEventListener('submit', async (e) => {
             e.preventDefault();
