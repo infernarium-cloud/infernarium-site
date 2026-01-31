@@ -34,20 +34,20 @@
         .term-user { color: #600; font-weight: bold; transition: color 0.5s; }
         .terminal-sidebar:hover .term-user { color: #900; }
 
-        /* --- LETREIRO JAPONÊS (CORREÇÃO DE LOOP) --- */
+        /* --- LETREIRO JAPONÊS (LOOP CORRIGIDO) --- */
         .header-wormhole {
             position: absolute; top: 35px; left: 0; width: 100%; height: 30px;
             overflow: hidden; z-index: 10;
             display: flex; align-items: center;
         }
         .wormhole-container {
-            display: flex; width: 200%; /* Garante espaço para o clone do texto */
+            display: flex; width: 200%;
             -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
             mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
         }
         .scrolling-text {
             display: flex; white-space: nowrap;
-            animation: wormhole-scroll 30s linear infinite;
+            animation: wormhole-scroll 40s linear infinite;
             font-size: 0.72rem; color: #1a1a1a; letter-spacing: 8px;
         }
         .jp-group { display: flex; align-items: center; }
@@ -66,28 +66,30 @@
         .time-block { display: flex; flex-direction: column; align-items: center; }
         .label { font-size: 0.4rem; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
 
-        /* --- NEWSLETTER --- */
+        /* --- NEWSLETTER RESTAURADO --- */
         .newsletter-section { margin-top: 40px; opacity: 0.15; transition: opacity 0.6s ease-in-out; }
         .newsletter-section:hover { opacity: 0.7; }
+        .newsletter-label { display: block; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+        
         input#email { 
             background: transparent; border: none; border-bottom: 1px solid #222; 
             color: #444; font-family: 'Courier New', monospace; font-size: 10px; 
             width: 200px; text-align: center; outline: none; margin-bottom: 15px;
+            transition: border-color 0.5s;
         }
+        input#email:focus { border-bottom: 1px solid #600; color: #888; }
+
         .enter-btn {
-            background: transparent; border: 1px solid #222; color: #333; cursor: pointer; 
-            font-family: 'Courier New', monospace; font-size: 10px; text-transform: uppercase; 
-            letter-spacing: 4px; padding: 8px 20px; transition: all 0.4s ease;
+            display: block; margin: 0 auto; background: transparent; border: 1px solid #222; 
+            color: #333; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px; 
+            text-transform: uppercase; letter-spacing: 4px; padding: 8px 20px; transition: all 0.4s ease;
         }
         .enter-btn:hover { border-color: #600; color: #800; background: rgba(128, 0, 0, 0.05); }
 
         .footer-credits { position: absolute; bottom: 25px; right: 5%; font-size: 0.65rem; color: #2a2a2a; letter-spacing: 2px; text-transform: uppercase; z-index: 20; }
         .glitch-move { position: relative; display: inline-block; color: #800; animation: glitch-flash 0.5s infinite steps(1), depth-move 4s infinite ease-in-out; }
 
-        @keyframes wormhole-scroll { 
-            from { transform: translateX(0); } 
-            to { transform: translateX(-50%); } 
-        }
+        @keyframes wormhole-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes pulse-red-text { 0%, 100% { color: #400; } 50% { color: #f00; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); } }
         @keyframes slow-breath { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         @keyframes depth-move { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1.1); } }
@@ -102,7 +104,7 @@
 
     <div class="header-wormhole">
         <div class="wormhole-container">
-            <div class="scrolling-text" id="wormholeText">
+            <div class="scrolling-text">
                 <div class="jp-group">
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
                     <span class="jp-item">商売繁盛</span><div class="spacer-jp"></div>
@@ -136,6 +138,7 @@
 
         <section class="newsletter-section">
             <form id="awakeningForm">
+                <label class="newsletter-label">Leave your trail for the awakening</label>
                 <input type="email" id="email" placeholder="email@example.com" required>
                 <button type="submit" class="enter-btn">ENTER</button>
             </form>
@@ -147,8 +150,7 @@
     </div>
 
     <script>
-        // TERMINAL LOGS
-        const logs = ["Initializing...", "User @infernarium logged in.", "Bypassing firewall...", "Syncing SAMHAIN_v2.0...", "Connection STABLE", "Root access GRANTED", "Scanning void..."];
+        const logs = ["sudo apt-get update...", "User @infernarium logged in.", "Initializing Samhain_Protocol...", "Bypassing void firewall...", "Root access GRANTED", "Syncing Samhain_2026...", "Scanning nodes...", "Purging identity logs..."];
         function updateTerminal() {
             const term = document.getElementById('termLeft');
             const line = document.createElement('div');
@@ -159,14 +161,12 @@
         }
         setInterval(updateTerminal, 1500);
 
-        // PULSE JAPONÊS
         setInterval(() => {
             const items = document.querySelectorAll('.jp-item');
             items.forEach(el => el.classList.remove('red-pulse'));
             items[Math.floor(Math.random() * items.length)].classList.add('red-pulse');
         }, 4000);
 
-        // COUNTDOWN
         const targetDate = new Date(2026, 9, 31, 0, 0, 0).getTime();
         function updateTimer() {
             const now = new Date().getTime();
