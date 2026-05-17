@@ -18,9 +18,41 @@
             overflow: hidden; position: relative;
         }
 
-        /* --- TERMINAL ÚNICO (ESQUERDA) --- */
-        .terminal-sidebar {
+        /* --- TEXTO SAMHAIN (ESQUERDA) --- */
+        .samhain-sidebar {
             position: absolute; top: 0; left: 0; width: 28%; height: 100%;
+            padding: 60px 30px 30px 30px; box-sizing: border-box;
+            font-size: 10px; color: #330000;
+            overflow: hidden; display: flex; flex-direction: column; justify-content: center;
+            opacity: 0.15;
+            transition: opacity 0.6s ease-in-out, color 0.5s ease;
+            pointer-events: auto;
+            z-index: 5;
+            line-height: 1.8;
+        }
+        .samhain-sidebar:hover { opacity: 0.85; }
+        .samhain-sidebar:hover .samhain-title { color: #cc0000; text-shadow: 0 0 8px #500; }
+        .samhain-sidebar:hover .samhain-text { color: #999; }
+        .samhain-sidebar:hover .samhain-highlight { color: #cc0000; text-shadow: 0 0 4px #500; }
+        .samhain-title {
+            font-size: 11px; color: #440000; text-transform: uppercase; letter-spacing: 3px;
+            margin-bottom: 15px; font-weight: bold;
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+        .samhain-text {
+            color: #330000;
+            transition: color 0.5s ease;
+            text-align: justify;
+        }
+        .samhain-text p { margin: 0 0 12px 0; }
+        .samhain-highlight {
+            color: #550000;
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+
+        /* --- TERMINAL (DIREITA) --- */
+        .terminal-sidebar {
+            position: absolute; top: 0; right: 0; width: 28%; height: 100%;
             padding: 30px; box-sizing: border-box;
             font-size: 10px; color: #444;
             overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
@@ -111,11 +143,29 @@
             100% { transform: translate(0); }
         }
 
-        @media (max-width: 850px) { .terminal-sidebar { width: 100%; height: 25%; bottom: 0; top: auto; background: rgba(0,0,0,0.8); } }
+        @media (max-width: 850px) { 
+            .terminal-sidebar { width: 100%; height: 20%; bottom: 0; top: auto; right: auto; background: rgba(0,0,0,0.9); }
+            .samhain-sidebar { display: none; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- SEÇÃO SAMHAIN (ESQUERDA) -->
+    <div class="samhain-sidebar">
+        <div class="samhain-title">The Ancient Festival</div>
+        <div class="samhain-text">
+            <p><span class="samhain-highlight">Samhain</span> was an ancient Celtic pagan festival marking the end of the harvest season and the beginning of winter — the darker half of the year.</p>
+            <p>Celebrated on <span class="samhain-highlight">November 1st</span>, with festivities beginning on the evening of <span class="samhain-highlight">October 31st</span>, it was considered the Celtic new year.</p>
+            <p>The Celts believed that on this night, the boundary between the worlds of the living and the dead became blurred. The ghosts of the dead returned to earth.</p>
+            <p>People would light sacred <span class="samhain-highlight">bonfires</span> and wear costumes to ward off wandering spirits. It was a time for stock-taking, animal sacrifice, and communion with the dead.</p>
+            <p>In the 8th century, Pope Gregory III designated November 1st as <span class="samhain-highlight">All Saints Day</span>, incorporating some traditions of Samhain. The preceding evening became known as All Hallows Eve.</p>
+            <p>Eventually, <span class="samhain-highlight">Halloween</span>.</p>
+            <p>The veil is thinnest on this night. The dead walk among us. And some doors, once opened, cannot be closed.</p>
+        </div>
+    </div>
+
+    <!-- TERMINAL (DIREITA) -->
     <div class="terminal-sidebar" id="termLeft"></div>
 
     <div class="header-wormhole">
