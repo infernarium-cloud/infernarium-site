@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFERNARIUM | Samhain 2026</title>
+    <style>
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
+        body {
+            background-color: #050505; color: #e0e0e0;
+            display: flex; align-items: center; justify-content: center;
+            height: 100vh; margin: 0; font-family: 'Courier New', monospace;
+            overflow: hidden; position: relative;
+        }
+
+        /* TERMINAL (ESQUERDA) */
+        .terminal-sidebar {
+            position: absolute; top: 0; left: 0; width: 25%; height: 100%;
+            padding: 20px; font-size: 10px; color: #444; opacity: 0.2; z-index: 5;
+        }
+
+        /* CASCATA (DIREITA) - TOTALMENTE VISÍVEL AGORA */
+        #lyricsRight {
+            position: absolute; top: 0; right: 0; width: 25%; height: 100%;
+            z-index: 100; pointer-events: none; overflow: hidden;
+            border-left: 1px solid rgba(255,0,0,0.1);
+        }
+        
+        .falling-line {
+            position: absolute; color: #ff0000; font-size: 12px; font-weight: bold;
+            white-space: nowrap; top: -50px; text-shadow: 0 0 5px #f00;
+            animation: fall-anim linear forwards;
+        }
+
+        @keyframes fall-anim {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(110vh); opacity: 0; }
+        }
+
+        /* CONTEÚDO CENTRAL */
+        .content { text-align: center; z-index: 20; border-top: 1px solid #1a1a1a; padding-top: 20px; }
+        h1 { font-size: 11px; color: #444; letter-spacing: 2px; text-transform: uppercase; }
+        #countdown { color: #800; font-size: 1.5rem; font-weight: bold; margin: 20px 0; }
+        .logo-container img { max-width: 220px; opacity: 0.6; }
+
+    </style>
+</head>
+<body>
+
+    <div class="terminal-sidebar" id="termLeft"></div>
+    <div id="lyricsRight"></div>
+
+    <div class="logo-container"><img src="logo.png"></div>
+    <div class="content">
+        <h1>Opening on Halloween 2026</h1>
+        <div id="countdown">00:00:00:00</div>
+    </div>
+
+    <script>
+        // CASCATA DE LETRAS
+        const lyrics = [
+            "Poc Vezem", "Ter Qui Mon Serai", "A Rizer Ai", "Que Ce Ne Pas", 
+            "Er As Terer", "Que Re Ze Tai", "A Rizer Ai", "Que Re Ze Tai", 
+            "A Rizer Ai", "Que Ce Ne Pas", "Poc Vezem", "Ai Que Ce Ne Pas", 
+            "Poc Vezem", "Ter Qui Mon Serai", "Poc Vezem"
+        ];
+        
+        function spawn() {
+            const container = document.getElementById('lyricsRight');
+            const el = document.createElement('div');
+            el.className = 'falling-line';
+            el.innerText = lyrics[Math.floor(Math.random() * lyrics.length)];
+            el.style.left = Math.random() * 70 + "%";
+            const dur = 4 + Math.random() * 4;
+            el.style.animationDuration = dur + "s";
+            container.appendChild(el);
+            setTimeout(() => el.remove(), dur * 1000);
+        }
+        setInterval(spawn, 500);
+
+        // ÁUDIO INJECTOR
+        const audio = new Audio('notfound.ogg');
+        audio.loop = true;
+        document.addEventListener('click', () => audio.play(), {once: true});
+    </script>
+</body>
+</html>
