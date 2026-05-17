@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFERNARIUM | About the Project</title>
+    
+    <link rel="icon" type="image/png" href="seal_01.png">
+
+    <style>
+        /* TRAVA DE SELEÇÃO GLOBAL */
+        * { -webkit-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+        body {
+            background-color: #050505; color: #e0e0e0;
+            min-height: 100vh; margin: 0; font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden; position: relative;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 25px 40px; box-sizing: border-box;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, #050505 0%, transparent 100%);
+        }
+        .header-logo {
+            height: 50px; opacity: 0.6;
+            transition: opacity 0.4s ease;
+            animation: slow-breath 8s infinite ease-in-out;
+        }
+        .header-logo:hover { opacity: 1; }
+        .back-btn {
+            background: transparent; border: 1px solid #333; 
+            color: #666; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px; 
+            text-transform: uppercase; letter-spacing: 3px; padding: 8px 20px; 
+            transition: all 0.4s ease; text-decoration: none;
+        }
+        .back-btn:hover { border-color: #800; color: #ac0000; background: rgba(128, 0, 0, 0.05); }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            max-width: 800px; margin: 0 auto;
+            padding: 140px 40px 80px 40px;
+        }
+
+        .page-title {
+            font-size: 12px; color: #800; text-transform: uppercase; letter-spacing: 6px;
+            margin-bottom: 60px; text-align: center;
+            opacity: 0.8;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            opacity: 0.2;
+            transition: opacity 0.6s ease-in-out;
+        }
+        .section:hover { opacity: 0.9; }
+
+        .section-title {
+            font-size: 11px; color: #550000; text-transform: uppercase; letter-spacing: 4px;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .section-text {
+            font-size: 13px; color: #666; line-height: 2;
+            text-align: justify;
+        }
+        .section:hover .section-text { color: #999; }
+
+        .highlight {
+            color: #800;
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+        }
+        .section:hover .highlight { 
+            color: #cc0000; 
+            text-shadow: 0 0 4px #500; 
+        }
+
+        /* --- SEAL IMAGE --- */
+        .seal-container {
+            text-align: center; margin: 60px 0;
+            opacity: 0.15;
+            transition: opacity 0.6s ease-in-out;
+        }
+        .seal-container:hover { opacity: 0.7; }
+        .seal-img {
+            max-width: 150px; height: auto;
+            filter: grayscale(100%) brightness(0.5);
+            transition: filter 0.6s ease;
+        }
+        .seal-container:hover .seal-img {
+            filter: grayscale(0%) brightness(1);
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            text-align: center; padding: 40px;
+            border-top: 1px solid #1a1a1a;
+            margin-top: 60px;
+        }
+        .footer-text {
+            font-size: 10px; color: #333; letter-spacing: 2px; text-transform: uppercase;
+        }
+        .glitch-move { 
+            position: relative; display: inline-block; color: #800; 
+            animation: glitch-text-anim 3s infinite linear alternate-reverse; 
+        }
+
+        /* --- ANIMAÇÕES --- */
+        @keyframes slow-breath { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes glitch-text-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 600px) {
+            .main-content { padding: 120px 25px 60px 25px; }
+            .header { padding: 20px 25px; }
+            .header-logo { height: 40px; }
+            .section-text { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html">
+            <img src="logo.png" alt="INFERNARIUM" class="header-logo">
+        </a>
+        <a href="index.html" class="back-btn">Return</a>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title">About the Project</h1>
+
+        <section class="section">
+            <h2 class="section-title">What is Infernarium?</h2>
+            <p class="section-text">
+                <span class="highlight">INFERNARIUM</span> is an immersive digital experience that explores the boundaries between the mortal realm and the unknown. Born from the ancient traditions of <span class="highlight">Samhain</span>, this project seeks to recreate the mystical atmosphere of the night when the veil between worlds grows thin.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">The Vision</h2>
+            <p class="section-text">
+                We believe that true horror lies not in what we see, but in what we <span class="highlight">cannot see</span>. Our vision is to craft an experience that lingers in the mind long after the screen goes dark. Through carefully designed atmospheres, cryptic narratives, and interactive rituals, <span class="highlight">INFERNARIUM</span> invites you to confront the shadows that dwell within.
+            </p>
+        </section>
+
+        <div class="seal-container">
+            <img src="seal_01.png" alt="Infernarium Seal" class="seal-img">
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">The Awakening</h2>
+            <p class="section-text">
+                On <span class="highlight">Halloween 2026</span>, the gates will open. Those who have left their trail will be the first to witness what lies beyond. The countdown has begun. The ritual is in motion. There is no turning back.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Join the Covenant</h2>
+            <p class="section-text">
+                By subscribing to our awakening list, you become part of something greater than yourself. You will receive <span class="highlight">exclusive transmissions</span>, early access to hidden content, and invitations to participate in secret rituals before the public unveiling. Your soul has been marked. We will find you when the time comes.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">The Creators</h2>
+            <p class="section-text">
+                <span class="highlight">INFERNARIUM</span> is crafted by a collective of digital occultists, visual artists, and sound designers who share a passion for the macabre and the mysterious. We work in the shadows, guided by ancient symbols and modern technology, to bring forth experiences that transcend the ordinary.
+            </p>
+        </section>
+
+        <footer class="footer">
+            <p class="footer-text">Design by <span class="glitch-move">KOOPER</span> 2026 &reg;</p>
+        </footer>
+    </main>
+
+    <script>
+        // Desabilita menu de contexto
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+
+    <script>
+        (function() {
+            const audioConfig = { file: 'notfound.ogg', volume: 0.4, loop: true };
+            const bgAudio = document.createElement('audio');
+            bgAudio.src = audioConfig.file;
+            bgAudio.loop = audioConfig.loop;
+            bgAudio.preload = 'auto';
+            bgAudio.volume = audioConfig.volume;
+            bgAudio.style.display = 'none'; 
+            document.body.appendChild(bgAudio);
+
+            function tryPlayAudio() {
+                const playPromise = bgAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        document.addEventListener('click', unlockAudio, { once: true });
+                        document.addEventListener('keydown', unlockAudio, { once: true });
+                        document.addEventListener('touchstart', unlockAudio, { once: true });
+                    });
+                }
+            }
+
+            function unlockAudio() {
+                bgAudio.play();
+                document.removeEventListener('click', unlockAudio);
+                document.removeEventListener('keydown', unlockAudio);
+                document.removeEventListener('touchstart', unlockAudio);
+            }
+            tryPlayAudio();
+        })();
+    </script>
+</body>
+</html>
